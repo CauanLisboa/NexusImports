@@ -8,20 +8,20 @@ import { featured, categories, formatPrice } from "@/data/products";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "NEXUS Imports — Vitrine de Perfumes, Drones e Setup Gamer" },
+      { title: "NEXUS Imports — Vitrine de Perfumes, Mouses High-End e Setup Gamer" },
       {
         name: "description",
         content:
-          "Selecione um produto para começar: perfumes de alta fixação, drones profissionais e periféricos gamer em uma vitrine cinematográfica.",
+          "Selecione um produto para começar: perfumes de alta fixação, mouses gamer de alta precisão e periféricos em uma vitrine cinematográfica.",
       },
       {
         property: "og:title",
-        content: "NEXUS Imports — Vitrine de Perfumes, Drones e Setup Gamer",
+        content: "NEXUS Imports — Vitrine de Perfumes, Mouses High-End e Setup Gamer",
       },
       {
         property: "og:description",
         content:
-          "Perfumes, drones e periféricos gamer selecionados. Selecione um produto para começar.",
+          "Perfumes, mouses high-end e periféricos gamer selecionados. Selecione um produto para começar.",
       },
     ],
   }),
@@ -31,7 +31,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   const [active, setActive] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
-  const current = featured[active];
+  const current = featured[active] || featured[0];
   const next = featured[(active + 1) % featured.length];
 
   // Smooth auto-cycle between featured products if not hovered
@@ -54,7 +54,9 @@ function Index() {
             <span className="inline-block border border-primary/60 px-4 py-2 font-display text-sm uppercase tracking-[0.45em] text-foreground">
               NEXUS Imports
             </span>
-            <p className="mt-4 label-xs text-muted-foreground">Selecione um produto para começar</p>
+            <p className="mt-4 label-xs text-muted-foreground">
+              Conectando você aos melhores produtos do Paraguai.
+            </p>
           </div>
 
           <div
@@ -85,7 +87,7 @@ function Index() {
                     className={`relative h-full overflow-hidden border transition-all duration-500 ${
                       isActive
                         ? "border-primary/80 shadow-glow"
-                        : "border-border/40 opacity-55 hover:opacity-90 hover:border-primary/50"
+                        : "border-border/40 opacity-55 hover:border-primary/50 hover:opacity-90"
                     }`}
                   >
                     <div className="relative h-full w-full overflow-hidden">
@@ -141,9 +143,21 @@ function Index() {
                 <p className="mt-2 max-w-md text-sm text-muted-foreground">{current.description}</p>
               </div>
               <div className="flex items-center gap-6">
-                <span className="font-display text-xl tracking-widest text-foreground">
-                  {formatPrice(current.price)}
-                </span>
+                <div className="flex flex-col items-end">
+                  {current.originalPrice && (
+                    <div className="flex items-center gap-2">
+                      <span className="border border-primary bg-primary/20 px-1.5 py-0.5 label-xs text-primary font-semibold text-[10px]">
+                        PROMOÇÃO
+                      </span>
+                      <span className="font-display text-sm line-through text-muted-foreground/70 tracking-widest">
+                        {formatPrice(current.originalPrice)}
+                      </span>
+                    </div>
+                  )}
+                  <span className="font-display text-xl tracking-widest text-primary font-bold">
+                    {formatPrice(current.price)}
+                  </span>
+                </div>
                 <Link
                   to="/produtos/$id"
                   params={{ id: current.id }}

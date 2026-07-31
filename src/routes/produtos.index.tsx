@@ -25,15 +25,15 @@ export const Route = createFileRoute("/produtos/")({
   },
   head: () => ({
     meta: [
-      { title: "Produtos — Perfumes, Drones e Periféricos | NEXUS Imports" },
+      { title: "Produtos — Perfumes, Mouses High-End e Periféricos | NEXUS Imports" },
       {
         name: "description",
         content:
-          "Catálogo completo NEXUS Imports: perfumes masculinos e femininos de alta fixação, drones profissionais e periféricos gamer com filtro por preço.",
+          "Catálogo completo NEXUS Imports: perfumes masculinos e femininos de alta fixação, mouses de alta precisão e periféricos gamer com filtro por preço.",
       },
       {
         property: "og:title",
-        content: "Produtos — Perfumes, Drones e Periféricos | NEXUS Imports",
+        content: "Produtos — Perfumes, Mouses High-End e Periféricos | NEXUS Imports",
       },
       {
         property: "og:description",

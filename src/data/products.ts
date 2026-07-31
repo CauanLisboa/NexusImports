@@ -9,16 +9,17 @@ import perfumeVipRose from "@/assets/images/vip_rose_perfume_1785379040932.jpg";
 import perfumeLaVieEstBelle from "@/assets/images/la_vie_est_belle_1785379052024.jpg";
 import perfumePhantom from "@/assets/images/phantom_perfume_1785379062965.jpg";
 
-import drone1 from "@/assets/images/dji_mini_drone_1785378353169.jpg";
-import drone2 from "@/assets/images/vortex_fpv_drone_1785378710674.jpg";
+import mouseRazerStudio from "@/assets/images/razer_mouse_v4pro_1785538555375.jpg";
+import mouseRazerViper from "@/assets/images/razer_viper_v3_pro_1785539971167.jpg";
+import mouseRazerCobra from "@/assets/images/razer_cobra_pro_1785539947496.jpg";
+import mouseRazerDeathadder from "@/assets/images/razer_deathadder_v3_1785539959612.jpg";
 import keyboard1 from "@/assets/images/strike_tkl_keyboard_1785378719043.jpg";
 import headset1 from "@/assets/images/echo_hx_headset_1785378673510.jpg";
-
-export type CategoryId = "perfumes" | "drones" | "perifericos";
+export type CategoryId = "perfumes" | "mouses" | "perifericos";
 
 export const categories: { id: CategoryId; label: string; blurb: string }[] = [
   { id: "perfumes", label: "Perfumes", blurb: "Fragrâncias originais e de alta fixação" },
-  { id: "drones", label: "Drones", blurb: "Voo estável, imagem cinematográfica" },
+  { id: "mouses", label: "Mouses High-End", blurb: "Sensores de alta precisão e ultra-leveza" },
   { id: "perifericos", label: "Periféricos Gamer", blurb: "Resposta rápida, zero atraso" },
 ];
 
@@ -29,6 +30,7 @@ export type Product = {
   gender?: "masculino" | "feminino";
   tagline: string;
   price: number;
+  originalPrice?: number;
   image: string;
   description: string;
   specs: { label: string; value: string }[];
@@ -449,38 +451,72 @@ export const products: Product[] = [
     ],
   },
 
-  // Drones
+  // Mouses & Periféricos High-End
   {
-    id: "dji-mini-3-pro",
-    name: "DJI Mini 3 Pro",
-    category: "drones",
-    tagline: "Cinema / 4K HDR",
-    price: 8990,
-    image: drone1,
+    id: "razer-viper-v4-pro",
+    name: "Mouse Razer Viper V4 Pro",
+    category: "mouses",
+    tagline: "Wireless / 35K DPI Ultra-leve",
+    price: 1100,
+    originalPrice: 1300,
+    image: mouseRazerStudio,
     featured: true,
     description:
-      "Drone compacto abaixo de 249 g com gimbal de três eixos, sensor de 1/1.3 polegada e detecção de obstáculos tri-direcional. Acompanha o controle DJI RC-N1.",
+      "Mouse sem fio de altíssima performance Razer Viper V4 Pro. Design simétrico ultra-leve com sensor óptico Focus Pro 35K, switches de 3ª geração e transmissão sem fio 8000 Hz HyperPolling.",
     specs: [
-      { label: "Câmera", value: "4K/60 fps HDR" },
-      { label: "Autonomia", value: "34 minutos" },
-      { label: "Alcance", value: "12 km" },
-      { label: "Peso", value: "249 g" },
+      { label: "Sensor", value: "Focus Pro 35K DPI" },
+      { label: "Peso", value: "54 g (Ultra-leve)" },
+      { label: "Switches", value: "Ópticos Razer Gen-3" },
+      { label: "Polling Rate", value: "Até 8000 Hz HyperPolling" },
+      { label: "Conexão", value: "Razer HyperSpeed / USB-C" },
     ],
   },
   {
-    id: "vortex-fpv",
-    name: "Vortex FPV",
-    category: "drones",
-    tagline: "Racing / Freestyle",
-    price: 4290,
-    image: drone2,
+    id: "razer-cobra-pro",
+    name: "Mouse Razer Cobra Pro Óptico Bluetooth",
+    category: "mouses",
+    tagline: "Chroma RGB / Wireless & Bluetooth",
+    price: 972,
+    image: mouseRazerCobra,
     description:
-      "Chassi em fibra de carbono, motores de alto torque e transmissão digital de baixa latência. Para quem voa no limite.",
+      "Reduza a concorrência e deslumbre a todos com o Razer Cobra Pro — um mouse sem fio compacto com iluminação Chroma RGB de 11 zonas e conectividade Bluetooth / HyperSpeed.",
     specs: [
-      { label: "Velocidade", value: "160 km/h" },
-      { label: "Latência", value: "28 ms" },
-      { label: "Autonomia", value: "18 minutos" },
-      { label: "Peso", value: "650 g" },
+      { label: "Sensor", value: "Focus Pro 30K DPI" },
+      { label: "Iluminação", value: "Razer Chroma RGB (11 Zonas)" },
+      { label: "Conexão", value: "HyperSpeed Wireless / Bluetooth / USB-C" },
+      { label: "Peso", value: "77 g" },
+    ],
+  },
+  {
+    id: "razer-deathadder-v3-pro-usb",
+    name: "Mouse Razer Deathadder V3 Pro Óptico USB",
+    category: "mouses",
+    tagline: "Ergonômico / E-Sports Ultra-leve",
+    price: 1021.4,
+    image: mouseRazerDeathadder,
+    description:
+      "A vitória ganha um novo formato com o Razer DeathAdder V3 Pro. Reprojetado com a ajuda dos maiores profissionais de eSports, conta com formato ergonômico icônico e sensor óptico Focus Pro 30K.",
+    specs: [
+      { label: "Sensor", value: "Focus Pro 30K DPI" },
+      { label: "Peso", value: "63 g (Ergonômico)" },
+      { label: "Bateria", value: "Até 90 horas" },
+      { label: "Conexão", value: "Razer HyperSpeed Wireless / USB-C" },
+    ],
+  },
+  {
+    id: "razer-viper-v3-pro-wireless",
+    name: "Mouse Razer Viper V3 Pro Óptico Wireless",
+    category: "mouses",
+    tagline: "Wireless / E-Sports 8K HyperPolling",
+    price: 1102,
+    image: mouseRazerViper,
+    description:
+      "O maior mouse sem fio para eSports de todos os tempos está de volta para redefinir o cenário competitivo. Design simétrico focado em performance pura com sensor Focus Pro 35K Gen-2 e taxa de atualização de até 8000 Hz.",
+    specs: [
+      { label: "Sensor", value: "Focus Pro 35K DPI Gen-2" },
+      { label: "Peso", value: "54 g (Ultra-leve)" },
+      { label: "Polling Rate", value: "Até 8000 Hz HyperPolling" },
+      { label: "Conexão", value: "Razer HyperSpeed Wireless" },
     ],
   },
 
@@ -530,6 +566,7 @@ export function formatPrice(value: number) {
   return value.toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL",
-    minimumFractionDigits: 0,
+    minimumFractionDigits: value % 1 === 0 ? 0 : 2,
+    maximumFractionDigits: 2,
   });
 }

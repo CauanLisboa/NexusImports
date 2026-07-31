@@ -19,5 +19,7 @@ if (fs.existsSync(outputPublic)) {
 } else if (fs.existsSync(distDir)) {
   console.log(`[build-post] Found ${distDir}`);
 } else {
-  console.warn("[build-post] Warning: No build directory (.output/public, .vercel/output/static, or dist) found.");
+  console.warn(
+    "[build-post] Warning: No build directory (.output/public, .vercel/output/static, or dist) found.",
+  );
 }

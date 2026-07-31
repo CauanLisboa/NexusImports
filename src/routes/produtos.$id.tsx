@@ -116,12 +116,26 @@ function ProductPage() {
           </dl>
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
-            <span className="font-display text-2xl tracking-widest text-foreground">
-              {formatPrice(product.price)}
-            </span>
+            <div className="flex items-baseline gap-3">
+              {product.originalPrice && (
+                <span className="font-display text-lg line-through text-muted-foreground/70 tracking-widest">
+                  {formatPrice(product.originalPrice)}
+                </span>
+              )}
+              <span className="font-display text-3xl tracking-widest text-primary font-bold">
+                {formatPrice(product.price)}
+              </span>
+              {product.originalPrice && (
+                <span className="border border-primary bg-primary/20 px-2.5 py-1 label-xs font-semibold text-primary shadow-glow">
+                  OFERTA / PROMOÇÃO
+                </span>
+              )}
+            </div>
             <a
               href={`https://wa.me/5591991909232?text=${encodeURIComponent(
-                `Olá! Gostaria de comprar o produto: ${product.name} (${formatPrice(product.price)}) na NEXUS Imports.`,
+                product.originalPrice
+                  ? `Olá! Gostaria de aproveitar a promoção do produto: ${product.name} (De ${formatPrice(product.originalPrice)} por ${formatPrice(product.price)}) na NEXUS Imports.`
+                  : `Olá! Gostaria de comprar o produto: ${product.name} (${formatPrice(product.price)}) na NEXUS Imports.`,
               )}`}
               target="_blank"
               rel="noopener noreferrer"
