@@ -16,8 +16,10 @@ import mouseRazerDeathadder from "@/assets/images/razer_deathadder_v3_1785539959
 import keyboardRedragonElfPro from "@/assets/images/redragon_elf_pro_1785547581342.jpg";
 import keyboardRedragonS136 from "@/assets/images/redragon_s136_combo_1785547593851.jpg";
 import keyboardRazerOrnataV3 from "@/assets/images/razer_ornata_v3_tkl_1785547603685.jpg";
+import iphone14ProMax from "@/assets/images/iphone_14_pro_max_1785623308837.jpg";
+import iphone16ProMax from "@/assets/images/iphone_16_pro_max_1785628153288.jpg";
 
-export type CategoryId = "perfumes" | "medicamentos" | "perifericos";
+export type CategoryId = "perfumes" | "medicamentos" | "perifericos" | "eletronicos";
 
 export const categories: { id: CategoryId; label: string; blurb: string }[] = [
   { id: "perfumes", label: "Perfumes", blurb: "Fragrâncias originais e de alta fixação" },
@@ -30,6 +32,11 @@ export const categories: { id: CategoryId; label: string; blurb: string }[] = [
     id: "perifericos",
     label: "Periféricos Gamer",
     blurb: "Mouses, teclados e headsets de alta performance",
+  },
+  {
+    id: "eletronicos",
+    label: "Eletrônicos & Celulares",
+    blurb: "Smartphones e dispositivos de última geração",
   },
 ];
 
@@ -65,6 +72,42 @@ export const products: Product[] = [
       { label: "Concentração", value: "Eau de Parfum" },
       { label: "Fixação", value: "10 a 12 horas" },
       { label: "Gênero", value: "Masculino" },
+    ],
+  },
+  {
+    id: "iphone-14-pro-max-256gb",
+    name: "Celular Apple iPhone 14 Pro Max 256GB Recondicionado",
+    category: "eletronicos",
+    tagline: "Apple / 256GB / Recondicionado Grade A",
+    price: 3700,
+    image: iphone14ProMax,
+    featured: true,
+    description:
+      "Uma nova forma de interação no iPhone. Tela Super Retina XDR de 6,7 polegadas com ProMotion e Always-On, Dynamic Island e câmera principal de 48 MP.",
+    specs: [
+      { label: "Capacidade", value: "256 GB" },
+      { label: "Condição", value: "Recondicionado Grade A Premium" },
+      { label: "Tela", value: '6.7" Super Retina XDR com Dynamic Island' },
+      { label: "Câmera", value: "Tripla 48MP + 12MP + 12MP" },
+      { label: "Processador", value: "A16 Bionic" },
+    ],
+  },
+  {
+    id: "iphone-16-pro-max-256gb",
+    name: "Celular Apple iPhone 16 Pro Max 256GB",
+    category: "eletronicos",
+    tagline: "Apple / 256GB / Promoção Especial",
+    price: 5100,
+    originalPrice: 5300,
+    image: iphone16ProMax,
+    description:
+      "O topo de linha da Apple em oferta especial. Tela Super Retina XDR de 6,9 polegadas com ProMotion, botão Controle da Câmera, gravação 4K a 120 fps e chip A18 Pro.",
+    specs: [
+      { label: "Capacidade", value: "256 GB" },
+      { label: "Preço Promocional", value: "R$ 5.100 (De R$ 5.300)" },
+      { label: "Tela", value: '6.9" Super Retina XDR ProMotion' },
+      { label: "Câmera", value: "Tripla 48MP + 48MP Ultrawide + 12MP Telefoto 5x" },
+      { label: "Processador", value: "A18 Pro" },
     ],
   },
   {

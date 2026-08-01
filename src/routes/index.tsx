@@ -1,6 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { ArrowRight, ShieldCheck, Sparkles, MessageCircle } from "lucide-react";
+import {
+  ArrowRight,
+  ShieldCheck,
+  Sparkles,
+  MessageCircle,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { PageShell } from "@/components/site/PageShell";
 import { featured, categories, formatPrice } from "@/data/products";
@@ -8,20 +15,20 @@ import { featured, categories, formatPrice } from "@/data/products";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "NEXUS Imports — Vitrine de Perfumes, Mouses High-End e Setup Gamer" },
+      { title: "NEXUS Imports — Vitrine de Perfumes, Smartphones, Mouses e Setup Gamer" },
       {
         name: "description",
         content:
-          "Selecione um produto para começar: perfumes de alta fixação, mouses gamer de alta precisão e periféricos em uma vitrine cinematográfica.",
+          "Selecione um produto para começar: perfumes de alta fixação, smartphones Apple, mouses gamer de alta precisão e periféricos em uma vitrine cinematográfica.",
       },
       {
         property: "og:title",
-        content: "NEXUS Imports — Vitrine de Perfumes, Mouses High-End e Setup Gamer",
+        content: "NEXUS Imports — Vitrine de Perfumes, Smartphones e Setup Gamer",
       },
       {
         property: "og:description",
         content:
-          "Perfumes, mouses high-end e periféricos gamer selecionados. Selecione um produto para começar.",
+          "Perfumes, iPhones, mouses e periféricos gamer selecionados. Selecione um produto para começar.",
       },
     ],
   }),
@@ -29,18 +36,35 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const [active, setActive] = useState(1);
+  const [active, setActive] = useState(0);
+  const [slideIndex, setSlideIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+
+  const total = featured.length;
+  // Maximum slide index on desktop (showing 3 cards)
+  const maxSlideDesktop = Math.max(0, total - 3);
+
   const current = featured[active] || featured[0];
 
-  // Smooth auto-cycle between featured products if not hovered
+  const handleNext = () => {
+    setSlideIndex((prev) => (prev >= maxSlideDesktop ? 0 : prev + 1));
+  };
+
+  const handlePrev = () => {
+    setSlideIndex((prev) => (prev <= 0 ? maxSlideDesktop : prev - 1));
+  };
+
+  // Auto-slide effect
   useEffect(() => {
     if (isPaused) return;
     const interval = setInterval(() => {
-      setActive((prev) => (prev + 1) % featured.length);
-    }, 6000);
+      setSlideIndex((prev) => {
+        const nextSlide = prev >= maxSlideDesktop ? 0 : prev + 1;
+        return nextSlide;
+      });
+    }, 5000);
     return () => clearInterval(interval);
-  }, [isPaused]);
+  }, [isPaused, maxSlideDesktop]);
 
   return (
     <PageShell>
@@ -51,7 +75,7 @@ function Index() {
 
         <div className="relative mx-auto flex min-h-[calc(100vh-6rem)] max-w-7xl flex-col justify-between px-5 sm:px-8">
           {/* Header Title */}
-          <div className="text-center pt-2">
+          <div className="pt-2 text-center">
             <div className="inline-flex items-center gap-3 border border-primary/50 bg-stage/80 px-5 py-2 backdrop-blur-sm shadow-glow">
               <span className="size-2 rounded-full bg-primary animate-pulse" />
               <span className="font-display text-xs uppercase tracking-[0.4em] text-foreground">
@@ -63,79 +87,114 @@ function Index() {
             </p>
           </div>
 
-          {/* Product Cards Gallery */}
+          {/* Product Cards Sliding Gallery Container */}
           <div
-            className="my-6 grid grid-cols-3 gap-3 sm:gap-6 items-stretch"
+            className="relative my-6 px-1 sm:px-10 [--visible-cards:1] sm:[--visible-cards:3] [--gallery-gap:0.75rem] sm:[--gallery-gap:1.5rem]"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
           >
-            {featured.map((p, i) => {
-              const isActive = i === active;
-              return (
-                <button
-                  key={p.id}
-                  type="button"
-                  onClick={() => setActive(i)}
-                  onMouseEnter={() => setActive(i)}
-                  className="group relative block w-full text-left outline-none"
-                  aria-label={p.name}
-                >
-                  <motion.div
-                    layout
-                    initial={false}
-                    animate={{
-                      scale: isActive ? 1 : 0.97,
-                      opacity: isActive ? 1 : 0.65,
-                    }}
-                    transition={{ type: "spring", stiffness: 350, damping: 30 }}
-                    className={`relative h-[300px] sm:h-[400px] w-full overflow-hidden border transition-all duration-300 ${
-                      isActive
-                        ? "border-primary shadow-glow bg-stage"
-                        : "border-border/50 bg-background hover:border-primary/50 hover:opacity-90"
-                    }`}
-                  >
-                    {/* Product Image */}
-                    <div className="relative h-full w-full overflow-hidden">
-                      <motion.img
-                        key={p.image}
-                        src={p.image}
-                        alt={p.name}
-                        width={912}
-                        height={1200}
-                        animate={{
-                          scale: isActive ? 1.06 : 1,
-                        }}
-                        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                        className="h-full w-full object-cover"
-                      />
+            {/* Prev Arrow Button */}
+            <button
+              type="button"
+              onClick={handlePrev}
+              aria-label="Anterior"
+              className="absolute left-0 top-1/2 z-20 flex size-9 -translate-y-1/2 items-center justify-center border border-primary/50 bg-background/90 text-foreground backdrop-blur-md transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground hover:shadow-glow sm:size-11"
+            >
+              <ChevronLeft className="size-5" />
+            </button>
 
-                      {/* Laser Line Effect on Active */}
-                      {isActive && (
+            {/* Next Arrow Button */}
+            <button
+              type="button"
+              onClick={handleNext}
+              aria-label="Próximo"
+              className="absolute right-0 top-1/2 z-20 flex size-9 -translate-y-1/2 items-center justify-center border border-primary/50 bg-background/90 text-foreground backdrop-blur-md transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground hover:shadow-glow sm:size-11"
+            >
+              <ChevronRight className="size-5" />
+            </button>
+
+            {/* Sliding Track Viewport */}
+            <div className="overflow-hidden py-2">
+              <motion.div
+                className="flex gap-3 sm:gap-6"
+                animate={{
+                  x: `calc(-${slideIndex} * (100% + var(--gallery-gap)) / var(--visible-cards))`,
+                }}
+                transition={{
+                  type: "spring",
+                  stiffness: 280,
+                  damping: 30,
+                }}
+              >
+                {featured.map((p, i) => {
+                  const isActive = i === active;
+                  return (
+                    <div key={p.id} className="w-full shrink-0 sm:w-[calc((100%-2*1.5rem)/3)]">
+                      <button
+                        type="button"
+                        onClick={() => setActive(i)}
+                        onMouseEnter={() => setActive(i)}
+                        className="group relative block w-full text-left outline-none"
+                        aria-label={p.name}
+                      >
                         <motion.div
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: [0.3, 0.85, 0.3] }}
-                          transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
-                          className="pointer-events-none absolute left-1/2 top-0 h-full w-[2px] -translate-x-1/2 bg-gradient-to-b from-transparent via-primary to-transparent shadow-[0_0_20px_#ef4444]"
-                        />
-                      )}
+                          layout
+                          initial={false}
+                          animate={{
+                            scale: isActive ? 1 : 0.96,
+                            opacity: isActive ? 1 : 0.65,
+                          }}
+                          transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                          className={`relative h-[320px] w-full overflow-hidden border transition-all duration-300 sm:h-[400px] ${
+                            isActive
+                              ? "border-primary bg-stage shadow-glow"
+                              : "border-border/50 bg-background hover:border-primary/50 hover:opacity-90"
+                          }`}
+                        >
+                          {/* Product Image */}
+                          <div className="relative h-full w-full overflow-hidden">
+                            <motion.img
+                              src={p.image}
+                              alt={p.name}
+                              width={912}
+                              height={1200}
+                              animate={{
+                                scale: isActive ? 1.06 : 1,
+                              }}
+                              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                              className="h-full w-full object-cover"
+                            />
 
-                      {/* Dark Gradient Overlay for text readability */}
-                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent opacity-90" />
-                    </div>
+                            {/* Laser Line Effect on Active */}
+                            {isActive && (
+                              <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: [0.3, 0.85, 0.3] }}
+                                transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
+                                className="pointer-events-none absolute left-1/2 top-0 h-full w-[2px] -translate-x-1/2 bg-gradient-to-b from-transparent via-primary to-transparent shadow-[0_0_20px_#ef4444]"
+                              />
+                            )}
 
-                    {/* Card Footer Info */}
-                    <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6">
-                      <span className="inline-block border border-primary/40 bg-background/80 px-2 py-0.5 text-[10px] uppercase tracking-widest text-primary font-mono backdrop-blur-sm">
-                        {p.tagline}
-                      </span>
-                      <p className="mt-2 font-display text-sm uppercase tracking-wider text-foreground sm:text-lg line-clamp-1">
-                        {p.name}
-                      </p>
+                            {/* Dark Gradient Overlay for text readability */}
+                            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent opacity-90" />
+                          </div>
+
+                          {/* Card Footer Info */}
+                          <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6">
+                            <span className="inline-block border border-primary/40 bg-background/80 px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest text-primary backdrop-blur-sm">
+                              {p.tagline}
+                            </span>
+                            <p className="mt-2 font-display text-sm uppercase tracking-wider text-foreground line-clamp-1 sm:text-lg">
+                              {p.name}
+                            </p>
+                          </div>
+                        </motion.div>
+                      </button>
                     </div>
-                  </motion.div>
-                </button>
-              );
-            })}
+                  );
+                })}
+              </motion.div>
+            </div>
           </div>
 
           {/* Active Product Details & CTA */}
@@ -197,7 +256,10 @@ function Index() {
               <button
                 key={p.id}
                 type="button"
-                onClick={() => setActive(i)}
+                onClick={() => {
+                  setActive(i);
+                  setSlideIndex(Math.min(i, maxSlideDesktop));
+                }}
                 aria-label={`Ir para ${p.name}`}
                 className={`h-1 transition-all rounded-full ${
                   i === active
