@@ -54,11 +54,10 @@ function SobrePage() {
         ))}
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-8 px-5 py-16 sm:grid-cols-3 sm:px-8">
+      <section className="mx-auto grid max-w-7xl gap-8 px-5 py-16 sm:grid-cols-2 sm:px-8">
         {[
           { n: "01", t: "Curadoria", d: "Cada item é testado antes de entrar no catálogo." },
-          { n: "02", t: "Garantia", d: "12 meses de cobertura direta com a loja." },
-          { n: "03", t: "Entrega", d: "Envio protegido para todo o Brasil." },
+          { n: "02", t: "Entrega", d: "Envio protegido para todo o Brasil." },
         ].map((s) => (
           <div key={s.n} className="border-l border-primary/60 pl-5">
             <p className="font-display text-3xl text-primary">{s.n}</p>
