@@ -181,23 +181,42 @@ function Index() {
 
       <section className="border-t border-border/60 bg-background">
         <div className="mx-auto grid max-w-7xl gap-px bg-border/60 px-0 sm:grid-cols-3">
-          {categories.map((c) => (
-            <Link
-              key={c.id}
-              to="/produtos"
-              search={{ cat: c.id }}
-              className="group bg-background p-8 transition-all duration-300 hover:bg-stage sm:p-12"
-            >
-              <p className="label-xs text-primary">{c.id}</p>
-              <h2 className="mt-3 text-xl uppercase tracking-[0.18em] text-foreground transition-colors group-hover:text-primary">
-                {c.label}
-              </h2>
-              <p className="mt-2 text-sm text-muted-foreground">{c.blurb}</p>
-              <span className="mt-6 inline-flex items-center gap-2 label-xs text-muted-foreground transition-all group-hover:translate-x-1 group-hover:text-foreground">
-                Explorar <ArrowRight className="size-3" />
-              </span>
-            </Link>
-          ))}
+          {categories.map((c) =>
+            c.id === "medicamentos" ? (
+              <a
+                key={c.id}
+                href={`https://wa.me/5591991909232?text=${encodeURIComponent(
+                  "Olá! Gostaria de informações sobre medicamentos na NEXUS Imports.",
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group bg-background p-8 transition-all duration-300 hover:bg-stage sm:p-12"
+              >
+                <h2 className="text-xl uppercase tracking-[0.18em] text-foreground transition-colors group-hover:text-primary">
+                  {c.label}
+                </h2>
+                <p className="mt-2 text-sm text-muted-foreground">{c.blurb}</p>
+                <span className="mt-6 inline-flex items-center gap-2 label-xs text-primary transition-all group-hover:translate-x-1">
+                  Contato WhatsApp <ArrowRight className="size-3" />
+                </span>
+              </a>
+            ) : (
+              <Link
+                key={c.id}
+                to="/produtos"
+                search={{ cat: c.id }}
+                className="group bg-background p-8 transition-all duration-300 hover:bg-stage sm:p-12"
+              >
+                <h2 className="text-xl uppercase tracking-[0.18em] text-foreground transition-colors group-hover:text-primary">
+                  {c.label}
+                </h2>
+                <p className="mt-2 text-sm text-muted-foreground">{c.blurb}</p>
+                <span className="mt-6 inline-flex items-center gap-2 label-xs text-muted-foreground transition-all group-hover:translate-x-1 group-hover:text-foreground">
+                  Explorar <ArrowRight className="size-3" />
+                </span>
+              </Link>
+            ),
+          )}
         </div>
       </section>
     </PageShell>

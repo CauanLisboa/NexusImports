@@ -8,6 +8,7 @@ import { categories, products, type CategoryId } from "@/data/products";
 type SearchParams = {
   cat?: CategoryId;
   gender?: "masculino" | "feminino";
+  subCat?: "mouses" | "teclados";
   maxPrice?: number;
 };
 
@@ -19,9 +20,11 @@ export const Route = createFileRoute("/produtos/")({
   validateSearch: (search: Record<string, unknown>): SearchParams => {
     const cat = search.cat as CategoryId | undefined;
     const gender = search.gender as "masculino" | "feminino" | undefined;
+    const subCat =
+      search.subCat === "mouses" || search.subCat === "teclados" ? search.subCat : undefined;
     const validCat = categories.some((c) => c.id === cat) ? cat : undefined;
     const validGender = gender === "masculino" || gender === "feminino" ? gender : undefined;
-    return { cat: validCat, gender: validGender };
+    return { cat: validCat, gender: validGender, subCat };
   },
   head: () => ({
     meta: [
@@ -45,7 +48,7 @@ export const Route = createFileRoute("/produtos/")({
 });
 
 function ProdutosPage() {
-  const { cat, gender } = Route.useSearch();
+  const { cat, gender, subCat } = Route.useSearch();
   const [searchTerm, setSearchTerm] = useState("");
   const [priceRange, setPriceRange] = useState<PriceRangeKey>("all");
   const [minPrice, setMinPrice] = useState<string>("");
@@ -54,18 +57,30 @@ function ProdutosPage() {
   const [showPriceMenu, setShowPriceMenu] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Trigger loading state briefly when category or gender filter changes to prevent layout shifts
+  // Trigger loading state briefly when category, gender, or subCat filter changes to prevent layout shifts
   useEffect(() => {
     setIsLoading(true);
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 350);
     return () => clearTimeout(timer);
-  }, [cat, gender]);
+  }, [cat, gender, subCat]);
 
   const filtered = products.filter((p) => {
     if (cat && p.category !== cat) return false;
     if (gender && p.gender !== gender) return false;
+    if (
+      subCat === "mouses" &&
+      !p.name.toLowerCase().includes("mouse") &&
+      !p.tagline.toLowerCase().includes("mouse")
+    )
+      return false;
+    if (
+      subCat === "teclados" &&
+      !p.name.toLowerCase().includes("teclado") &&
+      !p.tagline.toLowerCase().includes("teclado")
+    )
+      return false;
     if (searchTerm.trim()) {
       const term = searchTerm.toLowerCase().trim();
       const matchName = p.name.toLowerCase().includes(term);
@@ -285,61 +300,123 @@ function ProdutosPage() {
             >
               Todos
             </Link>
-            {categories.map((c) => (
-              <Link
-                key={c.id}
-                to="/produtos"
-                search={{ cat: c.id, gender }}
-                className={`border px-5 py-2 label-xs transition-all ${
-                  cat === c.id
-                    ? "border-primary bg-primary text-primary-foreground shadow-glow"
-                    : "border-border/60 bg-stage text-muted-foreground hover:border-primary/50 hover:text-foreground"
-                }`}
-              >
-                {c.label}
-              </Link>
-            ))}
+            {categories.map((c) =>
+              c.id === "medicamentos" ? (
+                <a
+                  key={c.id}
+                  href={`https://wa.me/5591991909232?text=${encodeURIComponent(
+                    "Olá! Gostaria de informações sobre medicamentos na NEXUS Imports.",
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="border border-primary/60 bg-stage px-5 py-2 label-xs text-primary transition-all hover:bg-primary hover:text-primary-foreground shadow-glow"
+                >
+                  {c.label} (WhatsApp)
+                </a>
+              ) : (
+                <Link
+                  key={c.id}
+                  to="/produtos"
+                  search={{ cat: c.id }}
+                  className={`border px-5 py-2 label-xs transition-all ${
+                    cat === c.id
+                      ? "border-primary bg-primary text-primary-foreground shadow-glow"
+                      : "border-border/60 bg-stage text-muted-foreground hover:border-primary/50 hover:text-foreground"
+                  }`}
+                >
+                  {c.label}
+                </Link>
+              ),
+            )}
           </div>
 
-          {/* Sub-filters for Perfumes (Masculino / Feminino) */}
-          {(!cat || cat === "perfumes") && (
-            <div className="flex items-center gap-2">
-              <span className="label-xs text-muted-foreground mr-1">Linha:</span>
-              <Link
-                to="/produtos"
-                search={{ cat, gender: undefined }}
-                className={`border px-4 py-1.5 label-xs transition-all ${
-                  !gender
-                    ? "border-foreground bg-foreground text-background"
-                    : "border-border/60 text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                Todas
-              </Link>
-              <Link
-                to="/produtos"
-                search={{ cat: "perfumes", gender: "masculino" }}
-                className={`border px-4 py-1.5 label-xs transition-all ${
-                  gender === "masculino"
-                    ? "border-primary bg-primary text-primary-foreground shadow-glow"
-                    : "border-border/60 text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                Masculino
-              </Link>
-              <Link
-                to="/produtos"
-                search={{ cat: "perfumes", gender: "feminino" }}
-                className={`border px-4 py-1.5 label-xs transition-all ${
-                  gender === "feminino"
-                    ? "border-primary bg-primary text-primary-foreground shadow-glow"
-                    : "border-border/60 text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                Feminino
-              </Link>
-            </div>
-          )}
+          <div className="flex flex-wrap items-center gap-4">
+            {/* Sub-filters for Perfumes (Masculino / Feminino) */}
+            {cat === "perfumes" && (
+              <div className="flex items-center gap-2">
+                <span className="mr-1 label-xs text-muted-foreground">Linha:</span>
+                <Link
+                  to="/produtos"
+                  search={{ cat: "perfumes", gender: undefined }}
+                  className={`border px-4 py-1.5 label-xs transition-all ${
+                    !gender
+                      ? "border-foreground bg-foreground text-background"
+                      : "border-border/60 text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  Todas
+                </Link>
+                <Link
+                  to="/produtos"
+                  search={{ cat: "perfumes", gender: "masculino" }}
+                  className={`border px-4 py-1.5 label-xs transition-all ${
+                    gender === "masculino"
+                      ? "border-primary bg-primary text-primary-foreground shadow-glow"
+                      : "border-border/60 text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  Masculino
+                </Link>
+                <Link
+                  to="/produtos"
+                  search={{ cat: "perfumes", gender: "feminino" }}
+                  className={`border px-4 py-1.5 label-xs transition-all ${
+                    gender === "feminino"
+                      ? "border-primary bg-primary text-primary-foreground shadow-glow"
+                      : "border-border/60 text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  Feminino
+                </Link>
+              </div>
+            )}
+
+            {/* Sub-filters for Periféricos (Mouses / Teclados) */}
+            {(cat === "perifericos" || !cat) && (
+              <div className="flex items-center gap-2">
+                <span className="mr-1 label-xs text-muted-foreground">Periféricos:</span>
+                <Link
+                  to="/produtos"
+                  search={{ cat: cat === "perifericos" ? "perifericos" : undefined }}
+                  className={`border px-4 py-1.5 label-xs transition-all ${
+                    !subCat
+                      ? "border-foreground bg-foreground text-background"
+                      : "border-border/60 text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  Todos
+                </Link>
+                <Link
+                  to="/produtos"
+                  search={{
+                    cat: cat === "perifericos" ? "perifericos" : undefined,
+                    subCat: "mouses",
+                  }}
+                  className={`border px-4 py-1.5 label-xs transition-all ${
+                    subCat === "mouses"
+                      ? "border-primary bg-primary text-primary-foreground shadow-glow"
+                      : "border-border/60 text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  Mouses
+                </Link>
+                <Link
+                  to="/produtos"
+                  search={{
+                    cat: cat === "perifericos" ? "perifericos" : undefined,
+                    subCat: "teclados",
+                  }}
+                  className={`border px-4 py-1.5 label-xs transition-all ${
+                    subCat === "teclados"
+                      ? "border-primary bg-primary text-primary-foreground shadow-glow"
+                      : "border-border/60 text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  Teclados
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Active Filters bar */}
@@ -403,7 +480,27 @@ function ProdutosPage() {
         )}
 
         {/* Product Grid */}
-        {isLoading ? (
+        {cat === "medicamentos" ? (
+          <div className="mt-12 border border-primary/50 bg-stage/80 p-10 text-center shadow-glow">
+            <h3 className="font-display text-2xl uppercase tracking-widest text-primary">
+              Medicamentos Importados
+            </h3>
+            <p className="mx-auto mt-3 max-w-lg text-sm text-muted-foreground">
+              Para consultar disponibilidade, tabela de preços e fazer pedidos de medicamentos,
+              entre em contato diretamente com nossa equipe pelo WhatsApp.
+            </p>
+            <a
+              href={`https://wa.me/5591991909232?text=${encodeURIComponent(
+                "Olá! Gostaria de informações sobre medicamentos na NEXUS Imports.",
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex items-center gap-2 border border-primary bg-primary px-8 py-3.5 font-display text-xs uppercase tracking-widest text-primary-foreground shadow-glow transition-all hover:bg-primary/80"
+            >
+              Falar no WhatsApp
+            </a>
+          </div>
+        ) : isLoading ? (
           <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {Array.from({ length: 8 }).map((_, index) => (
               <ProductCardSkeleton key={index} />

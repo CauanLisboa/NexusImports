@@ -8,8 +8,11 @@ export function Footer() {
           </span>
         </div>
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-          <a href="mailto:cg622466@gmail.com" className="transition-colors hover:text-primary">
-            cg622466@gmail.com
+          <a
+            href="mailto:nexusimportspy@gmail.com"
+            className="transition-colors hover:text-primary"
+          >
+            nexusimportspy@gmail.com
           </a>
           <a
             href="https://wa.me/5591991909232?text=Ol%C3%A1!%20Gostaria%20de%20informa%C3%A7%C3%B5es%20sobre%20os%20produtos%20da%20NEXUS%20Imports."

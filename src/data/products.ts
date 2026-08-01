@@ -13,14 +13,24 @@ import mouseRazerStudio from "@/assets/images/razer_mouse_v4pro_1785538555375.jp
 import mouseRazerViper from "@/assets/images/razer_viper_v3_pro_1785539971167.jpg";
 import mouseRazerCobra from "@/assets/images/razer_cobra_pro_1785539947496.jpg";
 import mouseRazerDeathadder from "@/assets/images/razer_deathadder_v3_1785539959612.jpg";
-import keyboard1 from "@/assets/images/strike_tkl_keyboard_1785378719043.jpg";
-import headset1 from "@/assets/images/echo_hx_headset_1785378673510.jpg";
-export type CategoryId = "perfumes" | "mouses" | "perifericos";
+import keyboardRedragonElfPro from "@/assets/images/redragon_elf_pro_1785547581342.jpg";
+import keyboardRedragonS136 from "@/assets/images/redragon_s136_combo_1785547593851.jpg";
+import keyboardRazerOrnataV3 from "@/assets/images/razer_ornata_v3_tkl_1785547603685.jpg";
+
+export type CategoryId = "perfumes" | "medicamentos" | "perifericos";
 
 export const categories: { id: CategoryId; label: string; blurb: string }[] = [
   { id: "perfumes", label: "Perfumes", blurb: "Fragrâncias originais e de alta fixação" },
-  { id: "mouses", label: "Mouses High-End", blurb: "Sensores de alta precisão e ultra-leveza" },
-  { id: "perifericos", label: "Periféricos Gamer", blurb: "Resposta rápida, zero atraso" },
+  {
+    id: "medicamentos",
+    label: "Medicamentos",
+    blurb: "Medicamentos importados e cuidados de saúde",
+  },
+  {
+    id: "perifericos",
+    label: "Periféricos Gamer",
+    blurb: "Mouses, teclados e headsets de alta performance",
+  },
 ];
 
 export type Product = {
@@ -451,11 +461,11 @@ export const products: Product[] = [
     ],
   },
 
-  // Mouses & Periféricos High-End
+  // Periféricos Gamer (Mouses, Teclados, Headsets)
   {
     id: "razer-viper-v4-pro",
     name: "Mouse Razer Viper V4 Pro",
-    category: "mouses",
+    category: "perifericos",
     tagline: "Wireless / 35K DPI Ultra-leve",
     price: 1100,
     originalPrice: 1300,
@@ -474,7 +484,7 @@ export const products: Product[] = [
   {
     id: "razer-cobra-pro",
     name: "Mouse Razer Cobra Pro Óptico Bluetooth",
-    category: "mouses",
+    category: "perifericos",
     tagline: "Chroma RGB / Wireless & Bluetooth",
     price: 972,
     image: mouseRazerCobra,
@@ -490,7 +500,7 @@ export const products: Product[] = [
   {
     id: "razer-deathadder-v3-pro-usb",
     name: "Mouse Razer Deathadder V3 Pro Óptico USB",
-    category: "mouses",
+    category: "perifericos",
     tagline: "Ergonômico / E-Sports Ultra-leve",
     price: 1021.4,
     image: mouseRazerDeathadder,
@@ -506,9 +516,9 @@ export const products: Product[] = [
   {
     id: "razer-viper-v3-pro-wireless",
     name: "Mouse Razer Viper V3 Pro Óptico Wireless",
-    category: "mouses",
+    category: "perifericos",
     tagline: "Wireless / E-Sports 8K HyperPolling",
-    price: 1102,
+    price: 900,
     image: mouseRazerViper,
     description:
       "O maior mouse sem fio para eSports de todos os tempos está de volta para redefinir o cenário competitivo. Design simétrico focado em performance pura com sensor Focus Pro 35K Gen-2 e taxa de atualização de até 8000 Hz.",
@@ -522,36 +532,50 @@ export const products: Product[] = [
 
   // Periféricos
   {
-    id: "strike-tkl",
-    name: "Strike TKL",
+    id: "redragon-elf-pro-k649ct",
+    name: "Teclado Redragon Elf Pro K649CT-RGB Bluetooth",
     category: "perifericos",
-    tagline: "Mecânico / Hot-swap",
-    price: 749,
-    image: keyboard1,
+    tagline: "Mecânico / Bluetooth / Transparente",
+    price: 718,
+    image: keyboardRedragonElfPro,
     featured: true,
     description:
-      "Teclado tenkeyless com switches hot-swap, estrutura de alumínio e espuma interna. Digitação firme, som fechado.",
+      "Transforme cada videogame em uma experiência épica graças ao teclado mecânico Redragon Elf Pro K649CT com iluminação RGB e tripla conexão Bluetooth / 2.4Ghz / USB-C.",
     specs: [
-      { label: "Layout", value: "TKL ABNT2" },
-      { label: "Switches", value: "Lineares hot-swap" },
-      { label: "Polling", value: "8000 Hz" },
-      { label: "Conexão", value: "USB-C destacável" },
+      { label: "Conexão", value: "Bluetooth / 2.4 GHz / USB-C" },
+      { label: "Iluminação", value: "RGB Customizável" },
+      { label: "Design", value: "Acrílico Transparente" },
     ],
   },
   {
-    id: "echo-hx",
-    name: "Echo HX",
+    id: "redragon-s136-rgb-combo",
+    name: "Teclado Redragon S136 RGB USB Com Mouse",
     category: "perifericos",
-    tagline: "Headset / Wireless",
-    price: 899,
-    image: headset1,
+    tagline: "Combo Teclado RGB + Mouse Gamer",
+    price: 665,
+    image: keyboardRedragonS136,
     description:
-      "Drivers de 50 mm, áudio espacial e microfone com cancelamento de ruído. Conexão sem fio de 2,4 GHz com latência imperceptível.",
+      "Eleve sua experiência em jogos graças ao combo Redragon S136. Teclado compacto com iluminação RGB e mouse ergonômico de alta precisão.",
     specs: [
-      { label: "Drivers", value: "50 mm" },
-      { label: "Bateria", value: "70 horas" },
-      { label: "Conexão", value: "2,4 GHz + Bluetooth" },
-      { label: "Microfone", value: "Removível com ANC" },
+      { label: "Tipo", value: "Combo Teclado + Mouse Gamer" },
+      { label: "Iluminação", value: "RGB Chroma" },
+      { label: "Conexão", value: "USB Plug & Play" },
+    ],
+  },
+  {
+    id: "razer-ornata-v3-tkl",
+    name: "Teclado Razer Ornata V3 Tenkeyless USB",
+    category: "perifericos",
+    tagline: "Ergonômico TKL / Mecha-Membrana",
+    price: 770,
+    image: keyboardRazerOrnataV3,
+    description:
+      "Domine os dois mundos com o Razer Ornata V3 TKL – um teclado ergonômico sem fio tenkeyless de perfil baixo, alimentado por Razer Chroma RGB.",
+    specs: [
+      { label: "Switches", value: "Mecha-Membrana de Perfil Baixo" },
+      { label: "Layout", value: "Tenkeyless (TKL)" },
+      { label: "Acessório", value: "Apoio magnético para pulsos" },
+      { label: "Iluminação", value: "Razer Chroma RGB" },
     ],
   },
 ];

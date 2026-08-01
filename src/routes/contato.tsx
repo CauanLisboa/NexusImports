@@ -45,8 +45,8 @@ function ContatoPage() {
             {[
               {
                 icon: Mail,
-                label: "cg622466@gmail.com",
-                href: "mailto:cg622466@gmail.com",
+                label: "nexusimportspy@gmail.com",
+                href: "mailto:nexusimportspy@gmail.com",
               },
               {
                 icon: Phone,
