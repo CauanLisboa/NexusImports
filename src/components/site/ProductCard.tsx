@@ -11,7 +11,7 @@ export function ProductCard({ product }: { product: Product }) {
     <Link
       to="/produtos/$id"
       params={{ id: product.id }}
-      className="group relative block overflow-hidden border border-border/60 bg-stage transition-all duration-500 hover:border-primary/80 hover:shadow-glow"
+      className="group relative block overflow-hidden border border-border/60 bg-stage transition-all duration-300 ease-out hover:-translate-y-1.5 hover:scale-[1.02] hover:border-primary/80 hover:shadow-glow z-0 hover:z-10"
     >
       <div className="relative aspect-4/5 overflow-hidden stage-light bg-border/10">
         {!imageLoaded && (
