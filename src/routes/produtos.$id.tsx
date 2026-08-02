@@ -1,10 +1,11 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ShoppingBag } from "lucide-react";
 import { motion } from "motion/react";
 import { PageShell } from "@/components/site/PageShell";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getProduct, products, formatPrice, categories } from "@/data/products";
+import { useCart } from "@/context/CartContext";
 
 export const Route = createFileRoute("/produtos/$id")({
   loader: ({ params }) => {
@@ -38,6 +39,7 @@ export const Route = createFileRoute("/produtos/$id")({
 function ProductPage() {
   const { product } = Route.useLoaderData();
   const [imageLoaded, setImageLoaded] = useState(false);
+  const { addItem } = useCart();
   const index = products.findIndex((p) => p.id === product.id);
   const next = products[(index + 1) % products.length];
   const category = categories.find((c) => c.id === product.category);
@@ -148,7 +150,7 @@ function ProductPage() {
           </div>
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
-            <div className="flex items-baseline gap-3">
+            <div className="flex items-baseline gap-3 w-full">
               {product.originalPrice && (
                 <span className="font-display text-lg line-through text-muted-foreground/70 tracking-widest">
                   {formatPrice(product.originalPrice)}
@@ -163,6 +165,16 @@ function ProductPage() {
                 </span>
               )}
             </div>
+
+            <button
+              type="button"
+              onClick={() => addItem(product, 1)}
+              className="inline-flex items-center justify-center gap-3 border border-primary bg-primary px-7 py-3.5 font-display text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground shadow-glow transition-all duration-300 hover:bg-primary/90 hover:scale-[1.02]"
+            >
+              <ShoppingBag className="size-4" />
+              Adicionar ao Carrinho
+            </button>
+
             <a
               href={`https://wa.me/5591991909232?text=${encodeURIComponent(
                 product.originalPrice
@@ -171,16 +183,10 @@ function ProductPage() {
               )}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 bg-primary px-7 py-3 font-display text-xs uppercase tracking-[0.3em] text-primary-foreground transition-all duration-300 hover:bg-primary/85 hover:shadow-glow hover:translate-x-1"
+              className="inline-flex items-center justify-center gap-3 border border-border/60 bg-stage px-6 py-3.5 font-display text-xs uppercase tracking-[0.2em] text-foreground transition-all duration-300 hover:border-primary/80 hover:text-primary"
             >
-              Comprar no WhatsApp <ArrowRight className="size-4" />
+              Comprar direto no WhatsApp <ArrowRight className="size-4" />
             </a>
-            <Link
-              to="/contato"
-              className="inline-flex items-center gap-2 border border-border/60 bg-stage px-5 py-3 label-xs text-muted-foreground transition-colors hover:border-primary/60 hover:text-foreground"
-            >
-              Outros canais
-            </Link>
           </div>
 
           <Link

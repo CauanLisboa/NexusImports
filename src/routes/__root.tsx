@@ -1,5 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Analytics } from "@vercel/analytics/react";
+import { CartProvider } from "@/context/CartContext";
+import { CartDrawer } from "@/components/site/CartDrawer";
 import {
   Outlet,
   Link,
@@ -132,9 +134,12 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
-      <Analytics />
+      <CartProvider>
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <Outlet />
+        <CartDrawer />
+        <Analytics />
+      </CartProvider>
     </QueryClientProvider>
   );
 }

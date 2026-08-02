@@ -7,10 +7,12 @@ import {
   MessageCircle,
   ChevronLeft,
   ChevronRight,
+  ShoppingBag,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { PageShell } from "@/components/site/PageShell";
 import { featured, categories, formatPrice } from "@/data/products";
+import { useCart } from "@/context/CartContext";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -40,6 +42,7 @@ function Index() {
   const [slideIndex, setSlideIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const { addItem } = useCart();
 
   useEffect(() => {
     const checkMobile = () => {
@@ -306,13 +309,24 @@ function Index() {
                   </span>
                 </div>
 
-                <Link
-                  to="/produtos/$id"
-                  params={{ id: current.id }}
-                  className="inline-flex items-center gap-3 bg-primary px-7 py-3.5 font-display text-xs uppercase tracking-[0.25em] text-primary-foreground shadow-glow transition-all duration-300 hover:bg-primary/90 hover:translate-x-1"
-                >
-                  Ver produto <ArrowRight className="size-4" />
-                </Link>
+                <div className="flex flex-wrap items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => addItem(current, 1)}
+                    className="inline-flex items-center gap-2 border border-primary bg-primary px-5 py-3 font-display text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground shadow-glow transition-all duration-300 hover:bg-primary/90 hover:scale-[1.02]"
+                  >
+                    <ShoppingBag className="size-4" />
+                    Adicionar
+                  </button>
+
+                  <Link
+                    to="/produtos/$id"
+                    params={{ id: current.id }}
+                    className="inline-flex items-center gap-2 border border-border/60 bg-stage px-5 py-3 font-display text-xs uppercase tracking-[0.2em] text-foreground transition-all duration-300 hover:border-primary/80 hover:text-primary"
+                  >
+                    Ver produto <ArrowRight className="size-4" />
+                  </Link>
+                </div>
               </div>
             </motion.div>
           </AnimatePresence>

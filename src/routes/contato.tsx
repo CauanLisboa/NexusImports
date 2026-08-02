@@ -26,6 +26,31 @@ export const Route = createFileRoute("/contato")({
 
 function ContatoPage() {
   const [sent, setSent] = useState(false);
+  const [lastSubmitTime, setLastSubmitTime] = useState<number>(0);
+  const [honeypot, setHoneypot] = useState("");
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // Anti-bot honeypot check
+    if (honeypot) {
+      // Silent rejection for bots
+      setSent(true);
+      toast.success("Mensagem enviada com sucesso.");
+      return;
+    }
+
+    // Basic rate limit check (prevent repeated spam clicks)
+    const now = Date.now();
+    if (now - lastSubmitTime < 5000) {
+      toast.error("Aguarde alguns segundos antes de enviar outra mensagem.");
+      return;
+    }
+
+    setLastSubmitTime(now);
+    setSent(true);
+    toast.success("Mensagem enviada. Retornamos em breve.");
+  };
 
   return (
     <PageShell>
@@ -82,17 +107,28 @@ function ContatoPage() {
         </div>
 
         <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            setSent(true);
-            toast.success("Mensagem enviada. Retornamos em breve.");
-          }}
+          onSubmit={handleSubmit}
           className="grain border border-border/60 bg-stage p-6 sm:p-10"
         >
+          {/* Honeypot field - invisible to real human users */}
+          <div
+            aria-hidden="true"
+            className="hidden opacity-0 h-0 w-0 overflow-hidden pointer-events-none"
+          >
+            <input
+              type="text"
+              name="website_hp"
+              tabIndex={-1}
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+              autoComplete="off"
+            />
+          </div>
+
           <div className="space-y-5">
-            <Field label="Nome" name="nome" />
-            <Field label="E-mail" name="email" type="email" />
-            <Field label="Assunto" name="assunto" />
+            <Field label="Nome" name="nome" maxLength={100} />
+            <Field label="E-mail" name="email" type="email" maxLength={100} />
+            <Field label="Assunto" name="assunto" maxLength={150} />
             <div>
               <label htmlFor="mensagem" className="label-xs text-muted-foreground">
                 Mensagem
@@ -102,13 +138,15 @@ function ContatoPage() {
                 name="mensagem"
                 required
                 rows={5}
+                maxLength={1000}
                 className="mt-3 w-full border border-border bg-background px-4 py-3 text-sm text-foreground outline-none transition-colors focus:border-primary"
               />
             </div>
           </div>
           <button
             type="submit"
-            className="mt-8 w-full bg-primary px-6 py-4 font-display text-xs uppercase tracking-[0.35em] text-primary-foreground transition-colors hover:bg-primary/85"
+            disabled={sent}
+            className="mt-8 w-full bg-primary px-6 py-4 font-display text-xs uppercase tracking-[0.35em] text-primary-foreground transition-colors hover:bg-primary/85 disabled:opacity-50"
           >
             {sent ? "Enviado" : "Enviar mensagem"}
           </button>
@@ -118,7 +156,17 @@ function ContatoPage() {
   );
 }
 
-function Field({ label, name, type = "text" }: { label: string; name: string; type?: string }) {
+function Field({
+  label,
+  name,
+  type = "text",
+  maxLength,
+}: {
+  label: string;
+  name: string;
+  type?: string;
+  maxLength?: number;
+}) {
   return (
     <div>
       <label htmlFor={name} className="label-xs text-muted-foreground">
@@ -129,6 +177,7 @@ function Field({ label, name, type = "text" }: { label: string; name: string; ty
         name={name}
         type={type}
         required
+        maxLength={maxLength}
         className="mt-3 w-full border border-border bg-background px-4 py-3 text-sm text-foreground outline-none transition-colors focus:border-primary"
       />
     </div>
