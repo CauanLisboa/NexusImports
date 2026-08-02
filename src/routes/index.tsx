@@ -220,6 +220,10 @@ function Index() {
                 <p className="mt-1.5 text-xs sm:text-sm text-muted-foreground line-clamp-2">
                   {current.description}
                 </p>
+                <div className="mt-2.5 flex flex-wrap gap-x-4 gap-y-1 font-mono text-[11px] text-muted-foreground">
+                  <span>• Disponibilidade deve ser consultada por WhatsApp</span>
+                  <span>• Cor disponível deve ser consultada por contato</span>
+                </div>
               </div>
 
               <div className="flex flex-wrap items-center gap-5 sm:gap-8">

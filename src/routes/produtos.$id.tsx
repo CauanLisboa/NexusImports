@@ -115,6 +115,24 @@ function ProductPage() {
             ))}
           </dl>
 
+          {/* Mandatory Consult Notice Box */}
+          <div className="mt-6 border border-primary/40 bg-stage/90 p-4 space-y-2 font-mono text-xs text-foreground shadow-glow">
+            <div className="flex items-center gap-2.5">
+              <span className="size-2 rounded-full bg-primary animate-pulse shrink-0" />
+              <span>
+                <strong className="text-primary uppercase tracking-wider">Disponibilidade:</strong>{" "}
+                deve ser consultada por WhatsApp
+              </span>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <span className="size-2 rounded-full bg-primary animate-pulse shrink-0" />
+              <span>
+                <strong className="text-primary uppercase tracking-wider">Cor disponível:</strong>{" "}
+                deve ser consultada por contato
+              </span>
+            </div>
+          </div>
+
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <div className="flex items-baseline gap-3">
               {product.originalPrice && (
