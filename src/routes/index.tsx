@@ -282,7 +282,9 @@ function Index() {
                 </p>
                 <div className="mt-2.5 flex flex-wrap gap-x-4 gap-y-1 font-mono text-[11px] text-muted-foreground">
                   <span>• Disponibilidade deve ser consultada por WhatsApp</span>
-                  <span>• Cor disponível deve ser consultada por contato</span>
+                  {current.category !== "perfumes" && (
+                    <span>• Cor disponível deve ser consultada por contato</span>
+                  )}
                   <span>• Imagem meramente ilustrativa</span>
                 </div>
               </div>

@@ -651,7 +651,9 @@ export const products: Product[] = rawProducts.map((p) => ({
   specs: [
     ...p.specs,
     { label: "Disponibilidade", value: "Consultar por WhatsApp" },
-    { label: "Cor Disponível", value: "Consultar por contato" },
+    ...(p.category !== "perfumes"
+      ? [{ label: "Cor Disponível", value: "Consultar por contato" }]
+      : []),
   ],
 }));
 

@@ -129,13 +129,15 @@ function ProductPage() {
                 deve ser consultada por WhatsApp
               </span>
             </div>
-            <div className="flex items-center gap-2.5">
-              <span className="size-2 rounded-full bg-primary animate-pulse shrink-0" />
-              <span>
-                <strong className="text-primary uppercase tracking-wider">Cor disponível:</strong>{" "}
-                deve ser consultada por contato
-              </span>
-            </div>
+            {product.category !== "perfumes" && (
+              <div className="flex items-center gap-2.5">
+                <span className="size-2 rounded-full bg-primary animate-pulse shrink-0" />
+                <span>
+                  <strong className="text-primary uppercase tracking-wider">Cor disponível:</strong>{" "}
+                  deve ser consultada por contato
+                </span>
+              </div>
+            )}
             <div className="flex items-center gap-2.5">
               <span className="size-2 rounded-full bg-primary animate-pulse shrink-0" />
               <span>
