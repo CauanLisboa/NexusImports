@@ -75,6 +75,11 @@ function ProductPage() {
             transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
             className="pointer-events-none absolute left-1/2 top-0 h-full w-[2px] -translate-x-1/2 bg-gradient-to-b from-transparent via-primary to-transparent shadow-[0_0_25px_#ef4444]"
           />
+          {/* Illustrative image badge overlay */}
+          <div className="absolute bottom-3 right-3 z-10 border border-border/60 bg-background/90 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground backdrop-blur-sm">
+            * Imagem meramente ilustrativa
+          </div>
+
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 stage-floor" />
         </motion.div>
 
@@ -129,6 +134,13 @@ function ProductPage() {
               <span>
                 <strong className="text-primary uppercase tracking-wider">Cor disponível:</strong>{" "}
                 deve ser consultada por contato
+              </span>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <span className="size-2 rounded-full bg-primary animate-pulse shrink-0" />
+              <span>
+                <strong className="text-primary uppercase tracking-wider">Aviso:</strong> imagem
+                meramente ilustrativa
               </span>
             </div>
           </div>

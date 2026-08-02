@@ -181,9 +181,14 @@ function Index() {
 
                           {/* Card Footer Info */}
                           <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6">
-                            <span className="inline-block border border-primary/40 bg-background/80 px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest text-primary backdrop-blur-sm">
-                              {p.tagline}
-                            </span>
+                            <div className="flex items-center justify-between gap-2">
+                              <span className="inline-block border border-primary/40 bg-background/80 px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest text-primary backdrop-blur-sm">
+                                {p.tagline}
+                              </span>
+                              <span className="border border-border/50 bg-background/80 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-muted-foreground backdrop-blur-sm">
+                                * Imagem ilustrativa
+                              </span>
+                            </div>
                             <p className="mt-2 font-display text-sm uppercase tracking-wider text-foreground line-clamp-1 sm:text-lg">
                               {p.name}
                             </p>
@@ -223,6 +228,7 @@ function Index() {
                 <div className="mt-2.5 flex flex-wrap gap-x-4 gap-y-1 font-mono text-[11px] text-muted-foreground">
                   <span>• Disponibilidade deve ser consultada por WhatsApp</span>
                   <span>• Cor disponível deve ser consultada por contato</span>
+                  <span>• Imagem meramente ilustrativa</span>
                 </div>
               </div>
 

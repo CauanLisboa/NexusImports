@@ -95,16 +95,17 @@ const rawProducts: Product[] = [
   },
   {
     id: "iphone-16-pro-max-256gb",
-    name: "Celular Apple iPhone 16 Pro Max 256GB",
+    name: "Celular Apple iPhone 16 Pro Max 256GB Recondicionado",
     category: "eletronicos",
-    tagline: "Apple / 256GB / Bateria 97%",
+    tagline: "Apple / 256GB / Recondicionado Grade A",
     price: 5100,
     originalPrice: 5300,
     image: iphone16ProMax,
     description:
-      "O topo de linha da Apple em oferta especial. Bateria em excelente estado com 97% de saúde. Tela Super Retina XDR de 6,9 polegadas com ProMotion, botão Controle da Câmera, gravação 4K a 120 fps e chip A18 Pro.",
+      "O topo de linha da Apple recondicionado em oferta especial. Bateria em excelente estado com 97% de saúde. Tela Super Retina XDR de 6,9 polegadas com ProMotion, botão Controle da Câmera, gravação 4K a 120 fps e chip A18 Pro.",
     specs: [
       { label: "Capacidade", value: "256 GB" },
+      { label: "Condição", value: "Recondicionado Grade A Premium" },
       { label: "Saúde da Bateria", value: "97%" },
       { label: "Preço Promocional", value: "R$ 5.100 (De R$ 5.300)" },
       { label: "Tela", value: '6.9" Super Retina XDR ProMotion' },
@@ -114,16 +115,17 @@ const rawProducts: Product[] = [
   },
   {
     id: "iphone-15-pro-max-256gb",
-    name: "Celular Apple iPhone 15 Pro Max 256GB",
+    name: "Celular Apple iPhone 15 Pro Max 256GB Recondicionado",
     category: "eletronicos",
-    tagline: "Apple / 256GB / Promoção Especial",
+    tagline: "Apple / 256GB / Recondicionado Grade A",
     price: 4500,
     originalPrice: 4650,
     image: iphone15ProMax,
     description:
-      "Apple iPhone 15 Pro Max 256GB em oferta imperdível. Design robusto e leve em titânio, Dynamic Island, botão de Ação personalizável, câmera de 48 MP com telefoto de 5x e porta USB-C.",
+      "Apple iPhone 15 Pro Max 256GB recondicionado em oferta imperdível. Design robusto e leve em titânio, Dynamic Island, botão de Ação personalizável, câmera de 48 MP com telefoto de 5x e porta USB-C.",
     specs: [
       { label: "Capacidade", value: "256 GB" },
+      { label: "Condição", value: "Recondicionado Grade A Premium" },
       { label: "Preço Promocional", value: "R$ 4.500 (De R$ 4.650)" },
       { label: "Acabamento", value: "Titânio Preto (Black Titanium)" },
       { label: "Tela", value: '6.7" Super Retina XDR ProMotion' },
