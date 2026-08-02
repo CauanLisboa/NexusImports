@@ -82,7 +82,6 @@ const rawProducts: Product[] = [
     tagline: "Apple / 256GB / Recondicionado Grade A",
     price: 3700,
     image: iphone14ProMax,
-    featured: true,
     description:
       "Uma nova forma de interação no iPhone. Tela Super Retina XDR de 6,7 polegadas com ProMotion e Always-On, Dynamic Island e câmera principal de 48 MP.",
     specs: [
@@ -101,6 +100,7 @@ const rawProducts: Product[] = [
     price: 5100,
     originalPrice: 5300,
     image: iphone16ProMax,
+    featured: true,
     description:
       "O topo de linha da Apple recondicionado em oferta especial. Bateria em excelente estado com 97% de saúde. Tela Super Retina XDR de 6,9 polegadas com ProMotion, botão Controle da Câmera, gravação 4K a 120 fps e chip A18 Pro.",
     specs: [
@@ -604,7 +604,6 @@ const rawProducts: Product[] = [
     tagline: "Mecânico / Bluetooth / Transparente",
     price: 718,
     image: keyboardRedragonElfPro,
-    featured: true,
     description:
       "Transforme cada videogame em uma experiência épica graças ao teclado mecânico Redragon Elf Pro K649CT com iluminação RGB e tripla conexão Bluetooth / 2.4Ghz / USB-C.",
     specs: [
@@ -635,6 +634,7 @@ const rawProducts: Product[] = [
     tagline: "Ergonômico TKL / Mecha-Membrana",
     price: 770,
     image: keyboardRazerOrnataV3,
+    featured: true,
     description:
       "Domine os dois mundos com o Razer Ornata V3 TKL – um teclado ergonômico sem fio tenkeyless de perfil baixo, alimentado por Razer Chroma RGB.",
     specs: [

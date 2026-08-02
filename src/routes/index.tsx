@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   ArrowRight,
   ShieldCheck,
@@ -39,32 +39,55 @@ function Index() {
   const [active, setActive] = useState(0);
   const [slideIndex, setSlideIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const total = featured.length;
-  // Maximum slide index on desktop (showing 3 cards)
-  const maxSlideDesktop = Math.max(0, total - 3);
+  const visibleCards = isMobile ? 1 : 3;
+  const maxSlide = Math.max(0, total - visibleCards);
 
   const current = featured[active] || featured[0];
 
-  const handleNext = () => {
-    setSlideIndex((prev) => (prev >= maxSlideDesktop ? 0 : prev + 1));
-  };
+  const selectProduct = useCallback(
+    (index: number) => {
+      setActive(index);
+      setSlideIndex(Math.min(index, maxSlide));
+    },
+    [maxSlide],
+  );
 
-  const handlePrev = () => {
-    setSlideIndex((prev) => (prev <= 0 ? maxSlideDesktop : prev - 1));
-  };
+  const handleNext = useCallback(() => {
+    setActive((prevActive) => {
+      const nextActive = (prevActive + 1) % total;
+      setSlideIndex(Math.min(nextActive, maxSlide));
+      return nextActive;
+    });
+  }, [total, maxSlide]);
+
+  const handlePrev = useCallback(() => {
+    setActive((prevActive) => {
+      const prevActiveIndex = (prevActive - 1 + total) % total;
+      setSlideIndex(Math.min(prevActiveIndex, maxSlide));
+      return prevActiveIndex;
+    });
+  }, [total, maxSlide]);
 
   // Auto-slide effect
   useEffect(() => {
-    if (isPaused) return;
+    if (isPaused || total <= 1) return;
     const interval = setInterval(() => {
-      setSlideIndex((prev) => {
-        const nextSlide = prev >= maxSlideDesktop ? 0 : prev + 1;
-        return nextSlide;
-      });
+      handleNext();
     }, 5000);
     return () => clearInterval(interval);
-  }, [isPaused, maxSlideDesktop]);
+  }, [isPaused, total, handleNext]);
 
   return (
     <PageShell>
@@ -92,6 +115,8 @@ function Index() {
             className="relative my-6 px-1 sm:px-10 [--visible-cards:1] sm:[--visible-cards:3] [--gallery-gap:0.75rem] sm:[--gallery-gap:1.5rem]"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
+            onTouchStart={() => setIsPaused(true)}
+            onTouchEnd={() => setIsPaused(false)}
           >
             {/* Prev Arrow Button */}
             <button
@@ -113,10 +138,20 @@ function Index() {
               <ChevronRight className="size-5" />
             </button>
 
-            {/* Sliding Track Viewport */}
+            {/* Sliding Track Viewport with Drag Support */}
             <div className="overflow-hidden py-2">
               <motion.div
-                className="flex gap-3 sm:gap-6"
+                className="flex gap-3 sm:gap-6 cursor-grab active:cursor-grabbing"
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.2}
+                onDragEnd={(_e, { offset }) => {
+                  if (offset.x < -40) {
+                    handleNext();
+                  } else if (offset.x > 40) {
+                    handlePrev();
+                  }
+                }}
                 animate={{
                   x: `calc(-${slideIndex} * (100% + var(--gallery-gap)) / var(--visible-cards))`,
                 }}
@@ -132,8 +167,8 @@ function Index() {
                     <div key={p.id} className="w-full shrink-0 sm:w-[calc((100%-2*1.5rem)/3)]">
                       <button
                         type="button"
-                        onClick={() => setActive(i)}
-                        onMouseEnter={() => setActive(i)}
+                        onClick={() => selectProduct(i)}
+                        onMouseEnter={() => selectProduct(i)}
                         className="group relative block w-full text-left outline-none"
                         aria-label={p.name}
                       >
@@ -199,6 +234,26 @@ function Index() {
                   );
                 })}
               </motion.div>
+            </div>
+
+            {/* Carousel Pagination Dots */}
+            <div className="mt-4 flex items-center justify-center gap-2">
+              {featured.map((p, i) => {
+                const isCurrentActive = i === active;
+                return (
+                  <button
+                    key={p.id}
+                    type="button"
+                    onClick={() => selectProduct(i)}
+                    aria-label={`Ir para ${p.name}`}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      isCurrentActive
+                        ? "w-7 bg-primary shadow-glow"
+                        : "w-2 bg-muted-foreground/30 hover:bg-muted-foreground/60"
+                    }`}
+                  />
+                );
+              })}
             </div>
           </div>
 
