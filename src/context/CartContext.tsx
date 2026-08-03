@@ -4,11 +4,12 @@ import type { Product } from "@/data/products";
 export type CartItem = {
   product: Product;
   quantity: number;
+  selectedColor?: string;
 };
 
 type CartContextType = {
   cart: CartItem[];
-  addItem: (product: Product, quantity?: number) => void;
+  addItem: (product: Product, quantity?: number, selectedColor?: string) => void;
   removeItem: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
@@ -68,10 +69,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, [cart]);
 
-  const addItem = (product: Product, quantity = 1) => {
+  const addItem = (product: Product, quantity = 1, selectedColor?: string) => {
     const validQty = Math.max(1, Math.min(99, Math.floor(quantity)));
+    const colorVal = selectedColor || product.colors?.[0]?.name;
     setCart((prevCart) => {
-      const existingIndex = prevCart.findIndex((item) => item.product.id === product.id);
+      const existingIndex = prevCart.findIndex(
+        (item) => item.product.id === product.id && item.selectedColor === colorVal,
+      );
       if (existingIndex > -1) {
         const updated = [...prevCart];
         const newQty = Math.min(99, updated[existingIndex].quantity + validQty);
@@ -81,7 +85,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         };
         return updated;
       }
-      return [...prevCart, { product, quantity: validQty }];
+      return [...prevCart, { product, quantity: validQty, selectedColor: colorVal }];
     });
     setIsOpen(true);
   };

@@ -168,9 +168,9 @@ function Index() {
                   const isActive = i === active;
                   return (
                     <div key={p.id} className="w-full shrink-0 sm:w-[calc((100%-2*1.5rem)/3)]">
-                      <button
-                        type="button"
-                        onClick={() => selectProduct(i)}
+                      <Link
+                        to="/produtos/$id"
+                        params={{ id: p.id }}
                         onMouseEnter={() => selectProduct(i)}
                         className="group relative block w-full text-left outline-none"
                         aria-label={p.name}
@@ -232,7 +232,7 @@ function Index() {
                             </p>
                           </div>
                         </motion.div>
-                      </button>
+                      </Link>
                     </div>
                   );
                 })}

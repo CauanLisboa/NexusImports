@@ -19,6 +19,13 @@ import keyboardRazerOrnataV3 from "@/assets/images/razer_ornata_v3_tkl_178554760
 import iphone14ProMax from "@/assets/images/iphone_14_pro_max_1785623308837.jpg";
 import iphone16ProMax from "@/assets/images/iphone_16_pro_max_1785628153288.jpg";
 import iphone15ProMax from "@/assets/images/iphone_15_pro_max_black_1785628891357.jpg";
+import iphone17ProMax from "@/assets/images/iphone_17_pro_max_dark_1785721576739.jpg";
+import iphone17SilverClean from "@/assets/images/iphone17_silver_user_1785722796174.jpg";
+import iphone17OrangeClean from "@/assets/images/iphone17_orange_user_1785722771538.jpg";
+import iphone17BlueClean from "@/assets/images/iphone17_blue_user_1785722783921.jpg";
+import redmiWatch5Black from "@/assets/images/redmi_watch5_black_1785723122660.jpg";
+import redmiWatch5Silver from "@/assets/images/redmi_watch5_silver_1785723132238.jpg";
+import garminForerunner165Black from "@/assets/images/garmin_forerunner_165_black_1785723267787.jpg";
 
 export type CategoryId = "perfumes" | "medicamentos" | "perifericos" | "eletronicos";
 
@@ -41,15 +48,25 @@ export const categories: { id: CategoryId; label: string; blurb: string }[] = [
   },
 ];
 
+export type ProductColor = {
+  name: string;
+  hex: string;
+  image: string;
+  code?: string;
+};
+
 export type Product = {
   id: string;
   name: string;
   category: CategoryId;
   gender?: "masculino" | "feminino";
+  condition?: "novo" | "recondicionado";
+  brand?: string;
   tagline: string;
   price: number;
   originalPrice?: number;
   image: string;
+  colors?: ProductColor[];
   description: string;
   specs: { label: string; value: string }[];
   featured?: boolean;
@@ -76,9 +93,120 @@ const rawProducts: Product[] = [
     ],
   },
   {
+    id: "garmin-forerunner-165",
+    name: "Smartwatch Garmin Forerunner 165 010-02863-20",
+    category: "eletronicos",
+    brand: "garmin",
+    condition: "novo",
+    tagline: "42MM / Tela AMOLED / 4GB / Bluetooth - Black/Slate",
+    price: 2000,
+    originalPrice: 2200,
+    image: garminForerunner165Black,
+    colors: [
+      {
+        name: "Preto (Black / Slate)",
+        hex: "#1e2229",
+        image: garminForerunner165Black,
+        code: "49351",
+      },
+    ],
+    featured: false,
+    description:
+      "Smartwatch Garmin Forerunner 165 (010-02863-20) com caixa de 42mm, tela AMOLED vibrante, 4GB de memória interna, conectividade Bluetooth e rastreamento avançado de corrida e saúde com GPS de alta precisão.",
+    specs: [
+      { label: "Modelo", value: "Garmin Forerunner 165 (010-02863-20)" },
+      { label: "Caixa / Tela", value: '42mm / Tela AMOLED 1.2"' },
+      { label: "Memória Interna", value: "4 GB" },
+      { label: "Conectividade", value: "Bluetooth, ANT+, GPS/GLONASS" },
+      { label: "Cor", value: "Black / Slate (Código: 49351)" },
+      { label: "Preço em Dólar", value: "US$ 237,00" },
+      { label: "Resistência à Água", value: "5 ATM (50 metros)" },
+    ],
+  },
+  {
+    id: "redmi-watch-5-active",
+    name: "Smartwatch Xiaomi Redmi Watch 5 Active M2351W1",
+    category: "eletronicos",
+    brand: "xiaomi",
+    condition: "novo",
+    tagline: "Xiaomi / Bluetooth / À Prova D'Água",
+    price: 280,
+    originalPrice: 300,
+    image: redmiWatch5Black,
+    colors: [
+      {
+        name: "Preto (Black)",
+        hex: "#1e1e24",
+        image: redmiWatch5Black,
+        code: "970051",
+      },
+      {
+        name: "Prata (Silver)",
+        hex: "#e2e8f0",
+        image: redmiWatch5Silver,
+        code: "970068",
+      },
+    ],
+    featured: true,
+    description:
+      "Smartwatch Xiaomi Redmi Watch 5 Active M2351W1 completo com conectividade Bluetooth e resistência À Prova D'Água. Tela de alta definição, monitoramento de saúde, rastreamento esportivo e bateria de longa duração. Disponível nas cores Preto e Prata.",
+    specs: [
+      { label: "Modelo", value: "Redmi Watch 5 Active (M2351W1)" },
+      { label: "Conectividade", value: "Bluetooth 5.3" },
+      { label: "Resistência", value: "À Prova D'Água (5 ATM)" },
+      { label: "Cores Disponíveis", value: "Preto, Prata / Branco" },
+      { label: "Bateria", value: "Até 18 dias de uso" },
+      { label: "Compatibilidade", value: "Android & iOS" },
+    ],
+  },
+  {
+    id: "iphone-17-pro-max-256gb",
+    name: "Celular Apple iPhone 17 Pro Max 256GB",
+    category: "eletronicos",
+    brand: "apple",
+    condition: "novo",
+    tagline: "Apple / 256GB / 100% Novo Lacrado",
+    price: 7800,
+    image: iphone17SilverClean,
+    colors: [
+      {
+        name: "Prateado (Silver)",
+        hex: "#e8eaee",
+        image: iphone17SilverClean,
+        code: "174145",
+      },
+      {
+        name: "Laranja (Orange)",
+        hex: "#ea6020",
+        image: iphone17OrangeClean,
+        code: "174121",
+      },
+      {
+        name: "Azul Escuro (Blue)",
+        hex: "#343c4c",
+        image: iphone17BlueClean,
+        code: "174138",
+      },
+    ],
+    featured: true,
+    description:
+      "Apresentamos o iPhone 17 Pro Max 256GB totalmente NOVO e lacrado de fábrica. Projetado com acabamento premium em titânio, tela Super Retina XDR ProMotion de 6,9 polegadas, chip de altíssima performance A19 Pro e sistema avançado de câmeras com controle intuitivo.",
+    specs: [
+      { label: "Condição", value: "100% Novo (Lacre de fábrica / Apple)" },
+      { label: "Capacidade", value: "256 GB" },
+      { label: "Modelos / Cores", value: "Prateado, Laranja, Azul Escuro" },
+      { label: "Garantia", value: "1 ano de Garantia Oficial Apple" },
+      { label: "Tela", value: '6.9" Super Retina XDR ProMotion' },
+      { label: "Processador", value: "Apple A19 Pro Chip" },
+      { label: "Câmera", value: "Sistema Triplo Pro 48MP com Telefoto e controle avançado" },
+    ],
+  },
+  {
     id: "iphone-14-pro-max-256gb",
     name: "Celular Apple iPhone 14 Pro Max 256GB Recondicionado",
     category: "eletronicos",
+    brand: "apple",
+    condition: "recondicionado",
     tagline: "Apple / 256GB / Recondicionado Grade A",
     price: 3700,
     image: iphone14ProMax,
@@ -96,6 +224,8 @@ const rawProducts: Product[] = [
     id: "iphone-15-pro-max-256gb",
     name: "Celular Apple iPhone 15 Pro Max 256GB Recondicionado",
     category: "eletronicos",
+    brand: "apple",
+    condition: "recondicionado",
     tagline: "Apple / 256GB / Recondicionado Grade A",
     price: 4500,
     originalPrice: 4650,
@@ -116,6 +246,8 @@ const rawProducts: Product[] = [
     id: "iphone-16-pro-max-256gb",
     name: "Celular Apple iPhone 16 Pro Max 256GB Recondicionado",
     category: "eletronicos",
+    brand: "apple",
+    condition: "recondicionado",
     tagline: "Apple / 256GB / Recondicionado Grade A",
     price: 5100,
     originalPrice: 5300,

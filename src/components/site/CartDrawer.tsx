@@ -30,6 +30,9 @@ export function CartDrawer() {
     let message = "Olá, NEXUS Imports! Gostaria de finalizar o seguinte pedido:\n\n";
     cart.forEach((item, index) => {
       message += `${index + 1}. *${item.product.name}*\n`;
+      if (item.selectedColor) {
+        message += `   Cor: *${item.selectedColor}*\n`;
+      }
       message += `   Qtd: ${item.quantity}x | Valor un.: ${formatPrice(item.product.price)}\n`;
       message += `   Subtotal: ${formatPrice(item.product.price * item.quantity)}\n\n`;
     });
@@ -103,80 +106,94 @@ export function CartDrawer() {
             </div>
           ) : (
             <div className="space-y-4 divide-y divide-border/40">
-              {cart.map(({ product, quantity }) => (
-                <div key={product.id} className="flex gap-4 pt-4 first:pt-0">
-                  {/* Image */}
-                  <Link
-                    to="/produtos/$id"
-                    params={{ id: product.id }}
-                    onClick={closeCart}
-                    className="relative aspect-square size-20 shrink-0 overflow-hidden border border-border/60 bg-stage"
+              {cart.map(({ product, quantity, selectedColor }) => {
+                const matchedColor = product.colors?.find((c) => c.name === selectedColor);
+                const displayImage = matchedColor ? matchedColor.image : product.image;
+                return (
+                  <div
+                    key={`${product.id}-${selectedColor || "default"}`}
+                    className="flex gap-4 pt-4 first:pt-0"
                   >
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="h-full w-full object-cover"
-                    />
-                  </Link>
+                    {/* Image */}
+                    <Link
+                      to="/produtos/$id"
+                      params={{ id: product.id }}
+                      onClick={closeCart}
+                      className="relative aspect-square size-20 shrink-0 overflow-hidden border border-border/60 bg-stage"
+                    >
+                      <img
+                        src={displayImage}
+                        alt={product.name}
+                        className="h-full w-full object-cover"
+                      />
+                    </Link>
 
-                  {/* Details */}
-                  <div className="flex flex-1 flex-col justify-between">
-                    <div>
-                      <div className="flex items-start justify-between gap-2">
-                        <Link
-                          to="/produtos/$id"
-                          params={{ id: product.id }}
-                          onClick={closeCart}
-                          className="font-display text-xs uppercase tracking-wider text-foreground hover:text-primary transition-colors line-clamp-2"
-                        >
-                          {product.name}
-                        </Link>
-                        <button
-                          type="button"
-                          onClick={() => removeItem(product.id)}
-                          aria-label={`Remover ${product.name}`}
-                          className="text-muted-foreground/60 transition-colors hover:text-destructive"
-                        >
-                          <Trash2 className="size-4" />
-                        </button>
+                    {/* Details */}
+                    <div className="flex flex-1 flex-col justify-between">
+                      <div>
+                        <div className="flex items-start justify-between gap-2">
+                          <Link
+                            to="/produtos/$id"
+                            params={{ id: product.id }}
+                            onClick={closeCart}
+                            className="font-display text-xs uppercase tracking-wider text-foreground hover:text-primary transition-colors line-clamp-2"
+                          >
+                            {product.name}
+                          </Link>
+                          <button
+                            type="button"
+                            onClick={() => removeItem(product.id)}
+                            aria-label={`Remover ${product.name}`}
+                            className="text-muted-foreground/60 transition-colors hover:text-destructive"
+                          >
+                            <Trash2 className="size-4" />
+                          </button>
+                        </div>
+                        <div className="mt-1 flex items-center gap-2 flex-wrap">
+                          <span className="font-mono text-[10px] text-muted-foreground">
+                            {product.tagline}
+                          </span>
+                          {selectedColor && (
+                            <span className="inline-flex items-center gap-1 font-mono text-[10px] text-primary bg-primary/10 border border-primary/30 px-1.5 py-0.5">
+                              Cor: {selectedColor}
+                            </span>
+                          )}
+                        </div>
                       </div>
-                      <p className="mt-1 font-mono text-[10px] text-muted-foreground">
-                        {product.tagline}
-                      </p>
-                    </div>
 
-                    <div className="mt-2 flex items-center justify-between">
-                      {/* Quantity Controls */}
-                      <div className="flex items-center border border-border/60 bg-stage">
-                        <button
-                          type="button"
-                          onClick={() => updateQuantity(product.id, quantity - 1)}
-                          className="p-1 text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50"
-                          aria-label="Diminuir quantidade"
-                        >
-                          <Minus className="size-3.5" />
-                        </button>
-                        <span className="w-8 text-center font-mono text-xs font-semibold text-foreground">
-                          {quantity}
+                      <div className="mt-2 flex items-center justify-between">
+                        {/* Quantity Controls */}
+                        <div className="flex items-center border border-border/60 bg-stage">
+                          <button
+                            type="button"
+                            onClick={() => updateQuantity(product.id, quantity - 1)}
+                            className="p-1 text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50"
+                            aria-label="Diminuir quantidade"
+                          >
+                            <Minus className="size-3.5" />
+                          </button>
+                          <span className="w-8 text-center font-mono text-xs font-semibold text-foreground">
+                            {quantity}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => updateQuantity(product.id, quantity + 1)}
+                            className="p-1 text-muted-foreground hover:text-foreground transition-colors"
+                            aria-label="Aumentar quantidade"
+                          >
+                            <Plus className="size-3.5" />
+                          </button>
+                        </div>
+
+                        {/* Item Total */}
+                        <span className="font-display text-sm font-bold tracking-wider text-primary">
+                          {formatPrice(product.price * quantity)}
                         </span>
-                        <button
-                          type="button"
-                          onClick={() => updateQuantity(product.id, quantity + 1)}
-                          className="p-1 text-muted-foreground hover:text-foreground transition-colors"
-                          aria-label="Aumentar quantidade"
-                        >
-                          <Plus className="size-3.5" />
-                        </button>
                       </div>
-
-                      {/* Item Total */}
-                      <span className="font-display text-sm font-bold tracking-wider text-primary">
-                        {formatPrice(product.price * quantity)}
-                      </span>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>

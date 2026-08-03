@@ -9,6 +9,8 @@ type SearchParams = {
   cat?: CategoryId;
   gender?: "masculino" | "feminino";
   subCat?: "mouses" | "teclados";
+  condition?: "novo" | "recondicionado";
+  brand?: string;
   maxPrice?: number;
 };
 
@@ -22,9 +24,14 @@ export const Route = createFileRoute("/produtos/")({
     const gender = search.gender as "masculino" | "feminino" | undefined;
     const subCat =
       search.subCat === "mouses" || search.subCat === "teclados" ? search.subCat : undefined;
+    const condition =
+      search.condition === "novo" || search.condition === "recondicionado"
+        ? search.condition
+        : undefined;
+    const brand = typeof search.brand === "string" ? search.brand : undefined;
     const validCat = categories.some((c) => c.id === cat) ? cat : undefined;
     const validGender = gender === "masculino" || gender === "feminino" ? gender : undefined;
-    return { cat: validCat, gender: validGender, subCat };
+    return { cat: validCat, gender: validGender, subCat, condition, brand };
   },
   head: () => ({
     meta: [
@@ -48,7 +55,7 @@ export const Route = createFileRoute("/produtos/")({
 });
 
 function ProdutosPage() {
-  const { cat, gender, subCat } = Route.useSearch();
+  const { cat, gender, subCat, condition, brand } = Route.useSearch();
   const [searchTerm, setSearchTerm] = useState("");
   const [priceRange, setPriceRange] = useState<PriceRangeKey>("all");
   const [minPrice, setMinPrice] = useState<string>("");
@@ -57,18 +64,20 @@ function ProdutosPage() {
   const [showPriceMenu, setShowPriceMenu] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Trigger loading state briefly when category, gender, or subCat filter changes to prevent layout shifts
+  // Trigger loading state briefly when category, gender, subCat, condition or brand filter changes
   useEffect(() => {
     setIsLoading(true);
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 350);
     return () => clearTimeout(timer);
-  }, [cat, gender, subCat]);
+  }, [cat, gender, subCat, condition, brand]);
 
   const filtered = products.filter((p) => {
     if (cat && p.category !== cat) return false;
     if (gender && p.gender !== gender) return false;
+    if (condition && p.condition !== condition) return false;
+    if (brand && p.brand?.toLowerCase() !== brand.toLowerCase()) return false;
     if (
       subCat === "mouses" &&
       !p.name.toLowerCase().includes("mouse") &&
@@ -331,6 +340,58 @@ function ProdutosPage() {
           </div>
 
           <div className="flex flex-wrap items-center gap-4">
+            {/* Sub-filters for Eletrônicos / Celulares (Estado: Novo / Recondicionado) */}
+            {(cat === "eletronicos" || !cat) && (
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="mr-1 label-xs text-muted-foreground">Estado Celular:</span>
+                <Link
+                  to="/produtos"
+                  search={{
+                    cat: cat === "eletronicos" ? "eletronicos" : undefined,
+                    condition: undefined,
+                    brand,
+                  }}
+                  className={`border px-3.5 py-1.5 label-xs transition-all ${
+                    !condition
+                      ? "border-foreground bg-foreground text-background"
+                      : "border-border/60 text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  Todos
+                </Link>
+                <Link
+                  to="/produtos"
+                  search={{
+                    cat: cat === "eletronicos" ? "eletronicos" : undefined,
+                    condition: "novo",
+                    brand,
+                  }}
+                  className={`border px-3.5 py-1.5 label-xs transition-all ${
+                    condition === "novo"
+                      ? "border-emerald-500 bg-emerald-500 text-emerald-950 font-semibold shadow-glow"
+                      : "border-border/60 text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  100% Novo
+                </Link>
+                <Link
+                  to="/produtos"
+                  search={{
+                    cat: cat === "eletronicos" ? "eletronicos" : undefined,
+                    condition: "recondicionado",
+                    brand,
+                  }}
+                  className={`border px-3.5 py-1.5 label-xs transition-all ${
+                    condition === "recondicionado"
+                      ? "border-amber-500 bg-amber-500 text-amber-950 font-semibold shadow-glow"
+                      : "border-border/60 text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  Recondicionado
+                </Link>
+              </div>
+            )}
+
             {/* Sub-filters for Perfumes (Masculino / Feminino) */}
             {cat === "perfumes" && (
               <div className="flex items-center gap-2">
@@ -372,12 +433,12 @@ function ProdutosPage() {
             )}
 
             {/* Sub-filters for Periféricos (Mouses / Teclados) */}
-            {(cat === "perifericos" || !cat) && (
+            {cat === "perifericos" && (
               <div className="flex items-center gap-2">
                 <span className="mr-1 label-xs text-muted-foreground">Periféricos:</span>
                 <Link
                   to="/produtos"
-                  search={{ cat: cat === "perifericos" ? "perifericos" : undefined }}
+                  search={{ cat: "perifericos" }}
                   className={`border px-4 py-1.5 label-xs transition-all ${
                     !subCat
                       ? "border-foreground bg-foreground text-background"
@@ -389,7 +450,7 @@ function ProdutosPage() {
                 <Link
                   to="/produtos"
                   search={{
-                    cat: cat === "perifericos" ? "perifericos" : undefined,
+                    cat: "perifericos",
                     subCat: "mouses",
                   }}
                   className={`border px-4 py-1.5 label-xs transition-all ${
@@ -403,7 +464,7 @@ function ProdutosPage() {
                 <Link
                   to="/produtos"
                   search={{
-                    cat: cat === "perifericos" ? "perifericos" : undefined,
+                    cat: "perifericos",
                     subCat: "teclados",
                   }}
                   className={`border px-4 py-1.5 label-xs transition-all ${
@@ -420,9 +481,39 @@ function ProdutosPage() {
         </div>
 
         {/* Active Filters bar */}
-        {(isPriceFiltered || searchTerm || sortBy !== "default") && (
+        {(isPriceFiltered ||
+          searchTerm ||
+          sortBy !== "default" ||
+          condition ||
+          brand ||
+          subCat ||
+          gender) && (
           <div className="mt-4 flex flex-wrap items-center gap-2 label-xs text-muted-foreground">
             <span>Filtros ativos:</span>
+            {condition && (
+              <span className="inline-flex items-center gap-1.5 border border-primary/50 bg-primary/10 px-2.5 py-1 text-primary font-medium">
+                Estado: {condition === "novo" ? "100% Novo" : "Recondicionado"}
+                <Link
+                  to="/produtos"
+                  search={{ cat, gender, subCat, condition: undefined, brand }}
+                  className="hover:text-foreground"
+                >
+                  <X className="size-3" />
+                </Link>
+              </span>
+            )}
+            {brand && (
+              <span className="inline-flex items-center gap-1.5 border border-primary/50 bg-primary/10 px-2.5 py-1 text-primary font-medium">
+                Marca: {brand.toUpperCase()}
+                <Link
+                  to="/produtos"
+                  search={{ cat, gender, subCat, condition, brand: undefined }}
+                  className="hover:text-foreground"
+                >
+                  <X className="size-3" />
+                </Link>
+              </span>
+            )}
             {searchTerm && (
               <span className="inline-flex items-center gap-1.5 border border-primary/50 bg-primary/10 px-2.5 py-1 text-primary">
                 Busca: "{searchTerm}"

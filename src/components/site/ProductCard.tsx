@@ -1,19 +1,24 @@
 import { useState, type MouseEvent } from "react";
 import { Link } from "@tanstack/react-router";
-import type { Product } from "@/data/products";
+import type { Product, ProductColor } from "@/data/products";
 import { formatPrice } from "@/data/products";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ShoppingBag } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 
 export function ProductCard({ product }: { product: Product }) {
+  const [selectedColor, setSelectedColor] = useState<ProductColor | null>(
+    product.colors?.[0] || null,
+  );
   const [imageLoaded, setImageLoaded] = useState(false);
   const { addItem } = useCart();
+
+  const activeImage = selectedColor ? selectedColor.image : product.image;
 
   const handleAddToCart = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    addItem(product, 1);
+    addItem(product, 1, selectedColor?.name);
   };
 
   return (
@@ -24,7 +29,8 @@ export function ProductCard({ product }: { product: Product }) {
             <Skeleton className="absolute inset-0 h-full w-full rounded-none bg-border/30" />
           )}
           <img
-            src={product.image}
+            key={activeImage}
+            src={activeImage}
             alt={product.name}
             loading="lazy"
             onLoad={() => setImageLoaded(true)}
@@ -40,12 +46,65 @@ export function ProductCard({ product }: { product: Product }) {
           <div className="absolute bottom-2 right-2 z-10 border border-border/50 bg-background/80 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-muted-foreground backdrop-blur-sm">
             * Imagem ilustrativa
           </div>
-          {product.originalPrice && (
-            <div className="absolute top-3 left-3 z-10 border border-primary bg-primary/20 px-2 py-0.5 label-xs font-semibold uppercase tracking-wider text-primary shadow-glow backdrop-blur-sm">
-              PROMOÇÃO
-            </div>
-          )}
+          <div className="absolute top-3 left-3 z-10 flex flex-col gap-1">
+            {product.condition === "novo" && (
+              <div className="border border-emerald-500 bg-emerald-950/80 px-2 py-0.5 label-xs font-semibold uppercase tracking-wider text-emerald-400 shadow-glow backdrop-blur-sm">
+                100% NOVO
+              </div>
+            )}
+            {product.condition === "recondicionado" && (
+              <div className="border border-amber-500/80 bg-amber-950/80 px-2 py-0.5 label-xs font-semibold uppercase tracking-wider text-amber-400 backdrop-blur-sm">
+                RECONDICIONADO
+              </div>
+            )}
+            {product.originalPrice && (
+              <div className="border border-primary bg-primary/20 px-2 py-0.5 label-xs font-semibold uppercase tracking-wider text-primary shadow-glow backdrop-blur-sm">
+                PROMOÇÃO
+              </div>
+            )}
+          </div>
         </div>
+
+        {/* Color Swatches selection on card */}
+        {product.colors && product.colors.length > 0 && (
+          <div className="flex items-center gap-2 border-t border-border/40 px-5 py-2.5 bg-background/50">
+            <span className="font-mono text-[11px] font-semibold text-foreground/80">Cor:</span>
+            <div className="flex items-center gap-1.5">
+              {product.colors.map((c) => {
+                const isSelected = selectedColor?.name === c.name;
+                return (
+                  <button
+                    key={c.name}
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setSelectedColor(c);
+                      setImageLoaded(false);
+                    }}
+                    title={c.name}
+                    className={`group/color relative flex items-center justify-center size-6 rounded-md border transition-all ${
+                      isSelected
+                        ? "border-primary ring-2 ring-primary/60 scale-105"
+                        : "border-border/80 hover:border-foreground"
+                    }`}
+                  >
+                    <span
+                      className="block size-4 rounded-sm shadow-inner"
+                      style={{ backgroundColor: c.hex }}
+                    />
+                  </button>
+                );
+              })}
+            </div>
+            {selectedColor && (
+              <span className="ml-auto font-mono text-[10px] text-muted-foreground truncate max-w-[120px]">
+                {selectedColor.name.split(" ")[0]}
+              </span>
+            )}
+          </div>
+        )}
+
         <div className="flex items-end justify-between gap-4 border-t border-border/60 p-5">
           <div>
             <p className="label-xs text-primary">{product.tagline}</p>

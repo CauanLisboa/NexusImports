@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight, ShoppingBag } from "lucide-react";
 import { motion } from "motion/react";
 import { PageShell } from "@/components/site/PageShell";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getProduct, products, formatPrice, categories } from "@/data/products";
+import { getProduct, products, formatPrice, categories, type ProductColor } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 
 export const Route = createFileRoute("/produtos/$id")({
@@ -38,11 +38,16 @@ export const Route = createFileRoute("/produtos/$id")({
 
 function ProductPage() {
   const { product } = Route.useLoaderData();
+  const [selectedColor, setSelectedColor] = useState<ProductColor | null>(
+    product.colors?.[0] || null,
+  );
   const [imageLoaded, setImageLoaded] = useState(false);
   const { addItem } = useCart();
   const index = products.findIndex((p) => p.id === product.id);
   const next = products[(index + 1) % products.length];
   const category = categories.find((c) => c.id === product.category);
+
+  const activeImage = selectedColor ? selectedColor.image : product.image;
 
   return (
     <PageShell>
@@ -57,11 +62,11 @@ function ProductPage() {
             <Skeleton className="absolute inset-0 h-full w-full rounded-none bg-border/30" />
           )}
           <motion.img
-            key={product.image}
+            key={activeImage}
             initial={{ scale: 1.08 }}
             animate={{ scale: 1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            src={product.image}
+            src={activeImage}
             alt={`${product.name} — ${product.tagline}`}
             onLoad={() => setImageLoaded(true)}
             width={912}
@@ -110,6 +115,52 @@ function ProductPage() {
           <p className="mt-6 max-w-lg text-sm leading-relaxed text-muted-foreground">
             {product.description}
           </p>
+
+          {/* Color Selector matching user reference */}
+          {product.colors && product.colors.length > 0 && (
+            <div className="mt-6 border-t border-b border-border/60 py-5">
+              <div className="flex items-center justify-between">
+                <span className="font-display text-sm font-semibold uppercase tracking-wider text-foreground">
+                  Cor:{" "}
+                  <span className="text-primary font-bold">
+                    {selectedColor?.name || "Selecione"}
+                  </span>
+                </span>
+                {selectedColor?.code && (
+                  <span className="font-mono text-xs text-muted-foreground">
+                    Código: {selectedColor.code}
+                  </span>
+                )}
+              </div>
+
+              <div className="mt-3.5 flex items-center gap-3">
+                {product.colors.map((c) => {
+                  const isSelected = selectedColor?.name === c.name;
+                  return (
+                    <button
+                      key={c.name}
+                      type="button"
+                      onClick={() => {
+                        setSelectedColor(c);
+                        setImageLoaded(false);
+                      }}
+                      className={`group relative flex size-11 items-center justify-center rounded-lg border-2 transition-all ${
+                        isSelected
+                          ? "border-primary bg-primary/5 ring-2 ring-primary/30"
+                          : "border-border/80 bg-stage hover:border-foreground"
+                      }`}
+                      title={`Selecionar ${c.name}`}
+                    >
+                      <span
+                        className="block size-7 rounded-full shadow-sm border border-black/10"
+                        style={{ backgroundColor: c.hex }}
+                      />
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           <dl className="mt-8 grid grid-cols-2 gap-px border border-border/60 bg-border/60">
             {product.specs.map((s: { label: string; value: string }) => (
@@ -168,7 +219,7 @@ function ProductPage() {
 
             <button
               type="button"
-              onClick={() => addItem(product, 1)}
+              onClick={() => addItem(product, 1, selectedColor?.name)}
               className="inline-flex items-center justify-center gap-3 border border-primary bg-primary px-7 py-3.5 font-display text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground shadow-glow transition-all duration-300 hover:bg-primary/90 hover:scale-[1.02]"
             >
               <ShoppingBag className="size-4" />
@@ -177,9 +228,9 @@ function ProductPage() {
 
             <a
               href={`https://wa.me/5591991909232?text=${encodeURIComponent(
-                product.originalPrice
-                  ? `Olá! Gostaria de aproveitar a promoção do produto: ${product.name} (De ${formatPrice(product.originalPrice)} por ${formatPrice(product.price)}) na NEXUS Imports.`
-                  : `Olá! Gostaria de comprar o produto: ${product.name} (${formatPrice(product.price)}) na NEXUS Imports.`,
+                `Olá! Gostaria de comprar o produto: ${product.name}${
+                  selectedColor ? ` (Cor: ${selectedColor.name})` : ""
+                } (${formatPrice(product.price)}) na NEXUS Imports.`,
               )}`}
               target="_blank"
               rel="noopener noreferrer"
