@@ -80,7 +80,7 @@ const rawProducts: Product[] = [
     category: "perfumes",
     gender: "masculino",
     tagline: "Amadeirado / Especiado",
-    price: 230,
+    price: 276,
     image: perfumeAsad,
     featured: true,
     description:
@@ -130,8 +130,8 @@ const rawProducts: Product[] = [
     brand: "xiaomi",
     condition: "novo",
     tagline: "Xiaomi / Bluetooth / À Prova D'Água",
-    price: 280,
-    originalPrice: 300,
+    price: 336,
+    originalPrice: 360,
     image: redmiWatch5Black,
     colors: [
       {
@@ -288,7 +288,7 @@ const rawProducts: Product[] = [
     category: "perfumes",
     gender: "masculino",
     tagline: "Aromático / Fougère",
-    price: 480,
+    price: 576,
     image: perfumeVipBlack,
     description:
       "212 VIP Black Carolina Herrera 100ml. Fragrância amadeirada e picante com notas de absinto, lavanda, casca de baunilha negra e almíscar.",
@@ -305,7 +305,7 @@ const rawProducts: Product[] = [
     category: "perfumes",
     gender: "masculino",
     tagline: "Amadeirado / Especiado",
-    price: 380,
+    price: 456,
     image: perfumeOneMillion,
     description:
       "1 Million Paco Rabanne 100ml. Ícone da perfumaria em frasco barra de ouro. Notas de tangerina sanguínea, hortelã, canela, rosa e couro aveludado.",
@@ -322,7 +322,7 @@ const rawProducts: Product[] = [
     category: "perfumes",
     gender: "masculino",
     tagline: "Aquático / Amadeirado",
-    price: 380,
+    price: 456,
     image: perfumeInvictus,
     description:
       "Invictus Rabanne 100ml. O perfume da vitória. Combinação refrescante de notas marinhas, casca de toranja, folha de louro, madeira de guaiaco e âmbar cinzento.",
@@ -356,7 +356,7 @@ const rawProducts: Product[] = [
     category: "perfumes",
     gender: "masculino",
     tagline: "Cítrico / Amadeirado",
-    price: 220,
+    price: 264,
     image: perfumeFerrariBlack,
     description:
       "Scuderia Ferrari Black 100ml. Fragrância marcante e envolvente com notas de maçã vermelha, ameixa, canela, jasmim, cedro e baunilha.",
@@ -373,7 +373,7 @@ const rawProducts: Product[] = [
     category: "perfumes",
     gender: "masculino",
     tagline: "Amadeirado / Oriental",
-    price: 420,
+    price: 504,
     image: perfumeVipBlack,
     description:
       "212 VIP Men Carolina Herrera 100ml. Inspirado na energia das noites de Nova York. Notas de lima caviar, pimenta preta, vodca de hortelã e madeira de rei.",
@@ -390,7 +390,7 @@ const rawProducts: Product[] = [
     category: "perfumes",
     gender: "masculino",
     tagline: "Oriental / Caramelizado",
-    price: 480,
+    price: 576,
     image: perfumePhantom,
     description:
       "Scandal Pour Homme Jean Paul Gaultier 100ml. Elegância masculina atrevida. Clássico caramelo sensual contrastado com sálvia e fava tonka.",
@@ -407,7 +407,7 @@ const rawProducts: Product[] = [
     category: "perfumes",
     gender: "masculino",
     tagline: "Amadeirado / Floral",
-    price: 450,
+    price: 540,
     image: perfumeVipBlack,
     description:
       "212 Men NYC Carolina Herrera 100ml. Perfume fresco urbano. Notas de especiarias, bergamota, gengibre, violeta e incenso.",
@@ -424,7 +424,7 @@ const rawProducts: Product[] = [
     category: "perfumes",
     gender: "masculino",
     tagline: "Oriental / Especiado",
-    price: 380,
+    price: 456,
     image: perfumeFerrariBlack,
     description:
       "Pure XS Paco Rabanne 100ml. Fragrância magnética com sensação de quente e frio: gengibre, seiva vegetal, tomilho e baunilha.",
@@ -441,7 +441,7 @@ const rawProducts: Product[] = [
     category: "perfumes",
     gender: "masculino",
     tagline: "Fougère / Frutado",
-    price: 450,
+    price: 540,
     image: perfumeVipBlack,
     description:
       "212 Men Heroes Carolina Herrera 90ml. Celebrando a juventude e a liberdade em frasco formato de skate. Notas de gengibre, pera e gerânio.",
@@ -477,7 +477,7 @@ const rawProducts: Product[] = [
     category: "perfumes",
     gender: "feminino",
     tagline: "Floral / Frutado",
-    price: 480,
+    price: 576,
     image: perfumeVipRose,
     description:
       "212 VIP Rosé Carolina Herrera 100ml. Uma fragrância alegre e sedutora com acorde de champanhe rosé, flor de pêssego e notas amadeiradas.",
@@ -494,7 +494,7 @@ const rawProducts: Product[] = [
     category: "perfumes",
     gender: "feminino",
     tagline: "Floral / Gourmand",
-    price: 490,
+    price: 588,
     image: perfumeLaVieEstBelle,
     description:
       "La Vie Est Belle Lancôme 100ml. Um manifesto de felicidade. Íris de Florença, jasmim Sambac, flor de laranjeira e essência de patchouli com um toque gourmand.",
@@ -511,7 +511,7 @@ const rawProducts: Product[] = [
     category: "perfumes",
     gender: "feminino",
     tagline: "Chypre / Mel",
-    price: 480,
+    price: 576,
     image: perfumeLaVieEstBelle,
     description:
       "Scandal Jean Paul Gaultier 100ml. Elegância e audácia extrema com notas viciantes de mel de gardênia, gardênia e patchouli.",
@@ -528,7 +528,7 @@ const rawProducts: Product[] = [
     category: "perfumes",
     gender: "feminino",
     tagline: "Oriental / Baunilha Salgada",
-    price: 480,
+    price: 576,
     image: perfumeLibre,
     description:
       "Olympéa Paco Rabanne 100ml. A deusa moderna. Encontro sensual entre a baunilha salgada, flor de gengibre e jasmim aquático.",
@@ -562,7 +562,7 @@ const rawProducts: Product[] = [
     category: "perfumes",
     gender: "feminino",
     tagline: "Floral / Amadeirado",
-    price: 490,
+    price: 588,
     image: perfumeOneMillion,
     description:
       "Lady Million Paco Rabanne 100ml. Glamour e sedução em frasco diamante dourado. Néroli, flor de laranjeira, jasmim e mel.",
@@ -596,7 +596,7 @@ const rawProducts: Product[] = [
     category: "perfumes",
     gender: "feminino",
     tagline: "Oriental / Amadeirado",
-    price: 480,
+    price: 576,
     image: perfumeFerrariBlack,
     description:
       "Black XS Paco Rabanne 100ml. Misterioso e rebelde. Flor de cacau, pimenta rosa, heléboro e madeira de moscada.",
@@ -613,7 +613,7 @@ const rawProducts: Product[] = [
     category: "perfumes",
     gender: "feminino",
     tagline: "Cítrico / Floral",
-    price: 450,
+    price: 540,
     image: perfumeLibre,
     description:
       "Light Blue Dolce & Gabbana 100ml. O espírito do verão mediterrâneo. Maçã verde, cedro siciliano, jasmim e bambu.",
@@ -647,7 +647,7 @@ const rawProducts: Product[] = [
     category: "perfumes",
     gender: "feminino",
     tagline: "Floral / Oriental",
-    price: 470,
+    price: 564,
     image: perfumeVipRose,
     description:
       "Classique Jean Paul Gaultier 100ml. Ícone no corpete de vidro. Flor de laranjeira, gengibre tentador e baunilha carnal.",
