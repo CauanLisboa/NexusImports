@@ -16,7 +16,8 @@ import mouseRazerDeathadder from "@/assets/images/razer_deathadder_v3_1785539959
 import keyboardRedragonElfPro from "@/assets/images/redragon_elf_pro_1785547581342.jpg";
 import keyboardRedragonS136 from "@/assets/images/redragon_s136_combo_1785547593851.jpg";
 import keyboardRazerOrnataV3 from "@/assets/images/razer_ornata_v3_tkl_1785547603685.jpg";
-import iphone14ProMax from "@/assets/images/iphone_14_pro_max_1785623308837.jpg";
+import iphone14ProMax from "@/assets/images/iphone14_promax_exact_user.png";
+import iphone13ProMaxSilver from "@/assets/images/iphone13_white_user_1785937636778.jpg";
 import iphone16ProMax from "@/assets/images/iphone_16_pro_max_1785628153288.jpg";
 import iphone15ProMax from "@/assets/images/iphone_15_pro_max_black_1785628891357.jpg";
 import iphone17ProMax from "@/assets/images/iphone_17_pro_max_dark_1785721576739.jpg";
@@ -125,7 +126,7 @@ const rawProducts: Product[] = [
   },
   {
     id: "redmi-watch-5-active",
-    name: "Smartwatch Xiaomi Redmi Watch 5 Active M2351W1",
+    name: "Smartwatch Xiaomi Redmi Watch 5 Active",
     category: "eletronicos",
     brand: "xiaomi",
     condition: "novo",
@@ -149,9 +150,9 @@ const rawProducts: Product[] = [
     ],
     featured: true,
     description:
-      "Smartwatch Xiaomi Redmi Watch 5 Active M2351W1 completo com conectividade Bluetooth e resistência À Prova D'Água. Tela de alta definição, monitoramento de saúde, rastreamento esportivo e bateria de longa duração. Disponível nas cores Preto e Prata.",
+      "Smartwatch Xiaomi Redmi Watch 5 Active completo com conectividade Bluetooth e resistência À Prova D'Água. Tela de alta definição, monitoramento de saúde, rastreamento esportivo e bateria de longa duração. Disponível nas cores Preto e Prata.",
     specs: [
-      { label: "Modelo", value: "Redmi Watch 5 Active (M2351W1)" },
+      { label: "Modelo", value: "Redmi Watch 5 Active" },
       { label: "Conectividade", value: "Bluetooth 5.3" },
       { label: "Resistência", value: "À Prova D'Água (5 ATM)" },
       { label: "Cores Disponíveis", value: "Preto, Prata / Branco" },
@@ -202,14 +203,51 @@ const rawProducts: Product[] = [
     ],
   },
   {
+    id: "iphone-13-pro-max-256gb",
+    name: "Celular Apple iPhone 13 Pro Max 256GB Recondicionado",
+    category: "eletronicos",
+    brand: "apple",
+    condition: "recondicionado",
+    tagline: "Apple / 256GB / Recondicionado Grade A",
+    price: 3700,
+    image: iphone13ProMaxSilver,
+    colors: [
+      {
+        name: "Prateado (Silver)",
+        hex: "#e8eaee",
+        image: iphone13ProMaxSilver,
+        code: "13256",
+      },
+    ],
+    featured: false,
+    description:
+      "iPhone 13 Pro Max 256GB Recondicionado em excelente estado (Grade A). Tela Super Retina XDR de 6,7 polegadas com ProMotion 120Hz, sistema de câmera tripla de 12MP e poderoso chip A15 Bionic.",
+    specs: [
+      { label: "Capacidade", value: "256 GB" },
+      { label: "Condição", value: "Recondicionado Grade A Premium" },
+      { label: "Cor", value: "Prateado (Silver)" },
+      { label: "Tela", value: '6.7" Super Retina XDR com ProMotion 120Hz' },
+      { label: "Câmera", value: "Tripla 12MP (Ultra-wide, Wide e Telefoto 3x)" },
+      { label: "Processador", value: "A15 Bionic" },
+    ],
+  },
+  {
     id: "iphone-14-pro-max-256gb",
     name: "Celular Apple iPhone 14 Pro Max 256GB Recondicionado",
     category: "eletronicos",
     brand: "apple",
     condition: "recondicionado",
     tagline: "Apple / 256GB / Recondicionado Grade A",
-    price: 3700,
+    price: 4100,
     image: iphone14ProMax,
+    colors: [
+      {
+        name: "Preto Espacial (Space Black)",
+        hex: "#2c2d30",
+        image: iphone14ProMax,
+        code: "14256",
+      },
+    ],
     description:
       "Uma nova forma de interação no iPhone. Tela Super Retina XDR de 6,7 polegadas com ProMotion e Always-On, Dynamic Island e câmera principal de 48 MP.",
     specs: [

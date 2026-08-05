@@ -203,16 +203,6 @@ function Index() {
                               className="h-full w-full object-cover"
                             />
 
-                            {/* Laser Line Effect on Active */}
-                            {isActive && (
-                              <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: [0.3, 0.85, 0.3] }}
-                                transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
-                                className="pointer-events-none absolute left-1/2 top-0 h-full w-[2px] -translate-x-1/2 bg-gradient-to-b from-transparent via-primary to-transparent shadow-[0_0_20px_#ef4444]"
-                              />
-                            )}
-
                             {/* Dark Gradient Overlay for text readability */}
                             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent opacity-90" />
                           </div>
@@ -223,9 +213,12 @@ function Index() {
                               <span className="inline-block border border-primary/40 bg-background/80 px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest text-primary backdrop-blur-sm">
                                 {p.tagline}
                               </span>
-                              <span className="border border-border/50 bg-background/80 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-muted-foreground backdrop-blur-sm">
-                                * Imagem ilustrativa
-                              </span>
+                              {p.id !== "iphone-13-pro-max-256gb" &&
+                                p.id !== "iphone-14-pro-max-256gb" && (
+                                  <span className="border border-border/50 bg-background/80 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-muted-foreground backdrop-blur-sm">
+                                    * Imagem ilustrativa
+                                  </span>
+                                )}
                             </div>
                             <p className="mt-2 font-display text-sm uppercase tracking-wider text-foreground line-clamp-1 sm:text-lg">
                               {p.name}
@@ -288,7 +281,9 @@ function Index() {
                   {current.category !== "perfumes" && (
                     <span>• Cor disponível deve ser consultada por contato</span>
                   )}
-                  <span>• Imagem meramente ilustrativa</span>
+                  {!["iphone-13-pro-max-256gb", "iphone-14-pro-max-256gb"].includes(current.id) && (
+                    <span>• Imagem meramente ilustrativa</span>
+                  )}
                 </div>
               </div>
 

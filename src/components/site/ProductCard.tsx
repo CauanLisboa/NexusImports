@@ -40,12 +40,13 @@ export function ProductCard({ product }: { product: Product }) {
               imageLoaded ? "opacity-100" : "opacity-0"
             }`}
           />
-          {/* Subtle animated red laser glow line overlay in middle on hover */}
-          <div className="pointer-events-none absolute left-1/2 top-0 h-full w-[2px] -translate-x-1/2 bg-gradient-to-b from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-hover:shadow-[0_0_20px_#f87171]" />
+          {/* Subtle animated red laser glow line overlay in middle on hover removed */}
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 stage-floor" />
-          <div className="absolute bottom-2 right-2 z-10 border border-border/50 bg-background/80 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-muted-foreground backdrop-blur-sm">
-            * Imagem ilustrativa
-          </div>
+          {!["iphone-13-pro-max-256gb", "iphone-14-pro-max-256gb"].includes(product.id) && (
+            <div className="absolute bottom-2 right-2 z-10 border border-border/50 bg-background/80 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-muted-foreground backdrop-blur-sm">
+              * Imagem ilustrativa
+            </div>
+          )}
           <div className="absolute top-3 left-3 z-10 flex flex-col gap-1">
             {product.condition === "novo" && (
               <div className="border border-emerald-500 bg-emerald-950/80 px-2 py-0.5 label-xs font-semibold uppercase tracking-wider text-emerald-400 shadow-glow backdrop-blur-sm">
