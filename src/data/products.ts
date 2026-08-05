@@ -17,7 +17,7 @@ import keyboardRedragonElfPro from "@/assets/images/redragon_elf_pro_17855475813
 import keyboardRedragonS136 from "@/assets/images/redragon_s136_combo_1785547593851.jpg";
 import keyboardRazerOrnataV3 from "@/assets/images/razer_ornata_v3_tkl_1785547603685.jpg";
 import iphone14ProMax from "@/assets/images/iphone14_promax_exact_user.png";
-import iphone13ProMaxSilver from "@/assets/images/iphone13_white_user_1785937636778.jpg";
+import iphone13ProMaxSilver from "@/assets/images/iphone13_promax_exact_user.png";
 import iphone16ProMax from "@/assets/images/iphone_16_pro_max_1785628153288.jpg";
 import iphone15ProMax from "@/assets/images/iphone_15_pro_max_black_1785628891357.jpg";
 import iphone17ProMax from "@/assets/images/iphone_17_pro_max_dark_1785721576739.jpg";
