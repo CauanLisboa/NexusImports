@@ -16,9 +16,11 @@ import mouseRazerDeathadder from "@/assets/images/razer_deathadder_v3_1785539959
 import keyboardRedragonElfPro from "@/assets/images/redragon_elf_pro_1785547581342.jpg";
 import keyboardRedragonS136 from "@/assets/images/redragon_s136_combo_1785547593851.jpg";
 import keyboardRazerOrnataV3 from "@/assets/images/razer_ornata_v3_tkl_1785547603685.jpg";
-import iphone14ProMax from "@/assets/images/iphone14_promax_exact_user.png";
-const iphone13ProMaxSilver = "/images/iphone13promax.jpg";
-import iphone16ProMax from "@/assets/images/iphone_16_pro_max_1785628153288.jpg";
+import iphone14SpaceBlack from "@/assets/images/iphone14_promax_spaceblack_1785935622629.jpg";
+import iphone14ProMaxSilver from "@/assets/images/iphone14_promax_silver_1785950708311.jpg";
+import iphone13ProMaxGraphite from "@/assets/images/iphone13_promax_graphite_1785951228466.jpg";
+import iphone13ProMaxSilverBright from "@/assets/images/iphone13_silver_bright_1785941383897.jpg";
+const iphone13ProMaxSilver = iphone13ProMaxSilverBright;
 import iphone15ProMax from "@/assets/images/iphone_15_pro_max_black_1785628891357.jpg";
 import iphone17ProMax from "@/assets/images/iphone_17_pro_max_dark_1785721576739.jpg";
 import iphone17SilverClean from "@/assets/images/iphone17_silver_user_1785722796174.jpg";
@@ -28,10 +30,15 @@ import redmiWatch5Black from "@/assets/images/redmi_watch5_black_1785723122660.j
 import redmiWatch5Silver from "@/assets/images/redmi_watch5_silver_1785723132238.jpg";
 import garminForerunner165Black from "@/assets/images/garmin_forerunner_165_black_1785723267787.jpg";
 
-export type CategoryId = "perfumes" | "medicamentos" | "perifericos" | "eletronicos";
+export type CategoryId = "perfumes" | "relogios" | "medicamentos" | "perifericos" | "eletronicos";
 
 export const categories: { id: CategoryId; label: string; blurb: string }[] = [
   { id: "perfumes", label: "Perfumes", blurb: "Fragrâncias originais e de alta fixação" },
+  {
+    id: "relogios",
+    label: "Relógios & Smartwatches",
+    blurb: "Smartwatches, relógios esportivos e monitores de saúde",
+  },
   {
     id: "medicamentos",
     label: "Medicamentos",
@@ -67,6 +74,7 @@ export type Product = {
   price: number;
   originalPrice?: number;
   image: string;
+  images?: string[];
   colors?: ProductColor[];
   description: string;
   specs: { label: string; value: string }[];
@@ -96,7 +104,7 @@ const rawProducts: Product[] = [
   {
     id: "garmin-forerunner-165",
     name: "Smartwatch Garmin Forerunner 165 010-02863-20",
-    category: "eletronicos",
+    category: "relogios",
     brand: "garmin",
     condition: "novo",
     tagline: "42MM / Tela AMOLED / 4GB / Bluetooth - Black/Slate",
@@ -127,7 +135,7 @@ const rawProducts: Product[] = [
   {
     id: "redmi-watch-5-active",
     name: "Smartwatch Xiaomi Redmi Watch 5 Active",
-    category: "eletronicos",
+    category: "relogios",
     brand: "xiaomi",
     condition: "novo",
     tagline: "Xiaomi / Bluetooth / À Prova D'Água",
@@ -211,12 +219,19 @@ const rawProducts: Product[] = [
     tagline: "Apple / 256GB / Recondicionado Grade A",
     price: 3700,
     image: iphone13ProMaxSilver,
+    images: [iphone13ProMaxSilver, iphone13ProMaxGraphite],
     colors: [
       {
         name: "Prateado (Silver)",
         hex: "#e8eaee",
         image: iphone13ProMaxSilver,
-        code: "13256",
+        code: "13256-SILVER",
+      },
+      {
+        name: "Grafite (Graphite / Preto)",
+        hex: "#2c2d30",
+        image: iphone13ProMaxGraphite,
+        code: "13256-GRAPHITE",
       },
     ],
     featured: false,
@@ -239,13 +254,20 @@ const rawProducts: Product[] = [
     condition: "recondicionado",
     tagline: "Apple / 256GB / Recondicionado Grade A",
     price: 4100,
-    image: iphone14ProMax,
+    image: iphone14ProMaxSilver,
+    images: [iphone14ProMaxSilver, iphone14SpaceBlack],
     colors: [
+      {
+        name: "Prateado (Silver / White)",
+        hex: "#e8eaee",
+        image: iphone14ProMaxSilver,
+        code: "14256-SILVER",
+      },
       {
         name: "Preto Espacial (Space Black)",
         hex: "#2c2d30",
-        image: iphone14ProMax,
-        code: "14256",
+        image: iphone14SpaceBlack,
+        code: "14256-BLACK",
       },
     ],
     description:
@@ -278,29 +300,6 @@ const rawProducts: Product[] = [
       { label: "Tela", value: '6.7" Super Retina XDR ProMotion' },
       { label: "Câmera", value: "Tripla 48MP + 12MP Ultrawide + 12MP Telefoto 5x" },
       { label: "Processador", value: "A17 Pro" },
-    ],
-  },
-  {
-    id: "iphone-16-pro-max-256gb",
-    name: "Celular Apple iPhone 16 Pro Max 256GB Recondicionado",
-    category: "eletronicos",
-    brand: "apple",
-    condition: "recondicionado",
-    tagline: "Apple / 256GB / Recondicionado Grade A",
-    price: 5100,
-    originalPrice: 5300,
-    image: iphone16ProMax,
-    featured: true,
-    description:
-      "O topo de linha da Apple recondicionado em oferta especial. Bateria em excelente estado com 97% de saúde. Tela Super Retina XDR de 6,9 polegadas com ProMotion, botão Controle da Câmera, gravação 4K a 120 fps e chip A18 Pro.",
-    specs: [
-      { label: "Capacidade", value: "256 GB" },
-      { label: "Condição", value: "Recondicionado Grade A Premium" },
-      { label: "Saúde da Bateria", value: "97%" },
-      { label: "Preço Promocional", value: "R$ 5.100 (De R$ 5.300)" },
-      { label: "Tela", value: '6.9" Super Retina XDR ProMotion' },
-      { label: "Câmera", value: "Tripla 48MP + 48MP Ultrawide + 12MP Telefoto 5x" },
-      { label: "Processador", value: "A18 Pro" },
     ],
   },
   {

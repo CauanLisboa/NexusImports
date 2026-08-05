@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowLeft, ArrowRight, ShoppingBag } from "lucide-react";
+import { ArrowLeft, ArrowRight, ShoppingBag, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "motion/react";
 import { PageShell } from "@/components/site/PageShell";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -38,16 +38,27 @@ export const Route = createFileRoute("/produtos/$id")({
 
 function ProductPage() {
   const { product } = Route.useLoaderData();
-  const [selectedColor, setSelectedColor] = useState<ProductColor | null>(
-    product.colors?.[0] || null,
-  );
+
+  const availableImages =
+    product.images && product.images.length > 0
+      ? product.images
+      : product.colors && product.colors.length > 0
+        ? product.colors.map((c) => c.image)
+        : [product.image];
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [imageLoaded, setImageLoaded] = useState(false);
   const { addItem } = useCart();
   const index = products.findIndex((p) => p.id === product.id);
   const next = products[(index + 1) % products.length];
   const category = categories.find((c) => c.id === product.category);
 
-  const activeImage = selectedColor ? selectedColor.image : product.image;
+  const activeImage = availableImages[currentImageIndex] || product.image;
+  const selectedColor =
+    product.colors?.find((c) => c.image === activeImage) ||
+    product.colors?.[currentImageIndex] ||
+    product.colors?.[0] ||
+    null;
 
   return (
     <PageShell>
@@ -59,22 +70,28 @@ function ProductPage() {
           className="group relative grain aspect-4/5 overflow-hidden border border-border/60 bg-stage stage-light shadow-glow"
         >
           {!imageLoaded && (
-            <Skeleton className="absolute inset-0 h-full w-full rounded-none bg-border/30" />
+            <Skeleton className="absolute inset-0 h-full w-full rounded-none bg-border/30 z-10 pointer-events-none" />
           )}
-          <motion.img
-            key={activeImage}
-            initial={{ scale: 1.08 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            src={activeImage}
-            alt={`${product.name} — ${product.tagline}`}
-            onLoad={() => setImageLoaded(true)}
-            width={912}
-            height={1200}
-            className={`h-full w-full object-cover transition-all duration-700 group-hover:scale-105 ${
-              imageLoaded ? "opacity-100" : "opacity-0"
-            }`}
-          />
+
+          {/* Sliding Gallery Frame */}
+          <div
+            className="flex h-full w-full transition-transform duration-500 ease-out"
+            style={{ transform: `translateX(-${currentImageIndex * 100}%)` }}
+          >
+            {availableImages.map((imgUrl, idx) => (
+              <div key={idx} className="relative h-full w-full shrink-0">
+                <img
+                  src={imgUrl}
+                  alt={`${product.name} — ${product.tagline} (${idx + 1})`}
+                  onLoad={() => setImageLoaded(true)}
+                  width={912}
+                  height={1200}
+                  className="h-full w-full object-cover transition-all duration-700 group-hover:scale-105"
+                />
+              </div>
+            ))}
+          </div>
+
           {/* Illustrative image badge overlay */}
           {!["iphone-13-pro-max-256gb", "iphone-14-pro-max-256gb"].includes(product.id) && (
             <div className="absolute bottom-3 right-3 z-10 border border-border/60 bg-background/90 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground backdrop-blur-sm">
@@ -82,7 +99,49 @@ function ProductPage() {
             </div>
           )}
 
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 stage-floor" />
+          {availableImages.length > 1 && (
+            <>
+              {/* Dots */}
+              <div className="absolute top-4 right-4 z-10 flex items-center gap-1.5 rounded-full bg-background/80 px-2.5 py-1 backdrop-blur-md border border-border/60">
+                {availableImages.map((_, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setCurrentImageIndex(idx)}
+                    className={`size-2 rounded-full transition-all duration-300 ${
+                      idx === currentImageIndex
+                        ? "bg-primary w-4 shadow-glow"
+                        : "bg-muted-foreground/40 hover:bg-muted-foreground"
+                    }`}
+                  />
+                ))}
+              </div>
+
+              {/* Prev/Next arrows */}
+              <button
+                type="button"
+                onClick={() =>
+                  setCurrentImageIndex(
+                    (prev) => (prev - 1 + availableImages.length) % availableImages.length,
+                  )
+                }
+                className="absolute left-3 top-1/2 -translate-y-1/2 z-20 flex size-9 items-center justify-center rounded-full bg-background/80 text-foreground transition-all hover:bg-primary hover:text-primary-foreground border border-border/60 shadow-lg"
+                aria-label="Imagem anterior"
+              >
+                <ChevronLeft className="size-5" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setCurrentImageIndex((prev) => (prev + 1) % availableImages.length)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 z-20 flex size-9 items-center justify-center rounded-full bg-background/80 text-foreground transition-all hover:bg-primary hover:text-primary-foreground border border-border/60 shadow-lg"
+                aria-label="Próxima imagem"
+              >
+                <ChevronRight className="size-5" />
+              </button>
+            </>
+          )}
+
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 stage-floor z-10" />
         </motion.div>
 
         <motion.div
@@ -136,8 +195,15 @@ function ProductPage() {
                       key={c.name}
                       type="button"
                       onClick={() => {
-                        setSelectedColor(c);
-                        setImageLoaded(false);
+                        const idx = availableImages.findIndex((img) => img === c.image);
+                        if (idx !== -1) {
+                          setCurrentImageIndex(idx);
+                        } else {
+                          const colorIdx = product.colors?.findIndex((col) => col.name === c.name);
+                          if (colorIdx !== undefined && colorIdx !== -1) {
+                            setCurrentImageIndex(colorIdx);
+                          }
+                        }
                       }}
                       className={`group relative flex size-11 items-center justify-center rounded-lg border-2 transition-all ${
                         isSelected

@@ -417,7 +417,7 @@ function Index() {
             </Link>
           </div>
 
-          <div className="grid gap-px bg-border/60 sm:grid-cols-3">
+          <div className="grid gap-px bg-border/60 sm:grid-cols-2 lg:grid-cols-3">
             {categories.map((c) =>
               c.id === "medicamentos" ? (
                 <a

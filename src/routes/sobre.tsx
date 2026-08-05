@@ -30,21 +30,22 @@ function SobrePage() {
         <div className="relative mx-auto max-w-4xl px-5 py-20 sm:px-8 sm:py-28">
           <p className="label-xs text-primary">Sobre</p>
           <h1 className="mt-4 text-3xl uppercase tracking-[0.16em] text-foreground sm:text-5xl">
-            Três categorias, um mesmo critério
+            Curadoria de excelência em cada categoria
           </h1>
           <p className="mt-6 max-w-2xl text-sm leading-relaxed text-muted-foreground">
             A NEXUS Imports nasceu de uma obsessão simples: produto bom merece ser mostrado como
-            merece. Trabalhamos com perfumes, drones e periféricos gamer porque são categorias onde
-            a diferença entre o comum e o excepcional se sente na primeira vez que você usa.
+            merece. Trabalhamos com perfumes, relógios & smartwatches, medicamentos, periféricos
+            gamer e eletrônicos porque são categorias onde a diferença entre o comum e o excepcional
+            se sente na primeira vez que você usa.
           </p>
           <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Nada entra no catálogo sem passar pelo nosso teste. Fixação, autonomia, resposta,
+            Nada entra no catálogo sem passar pelo nosso teste. Fixação, autonomia, precisão,
             acabamento — tudo é medido antes de virar vitrine.
           </p>
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-px bg-border/60 sm:grid-cols-3">
+      <section className="mx-auto grid max-w-7xl gap-px bg-border/60 sm:grid-cols-2 lg:grid-cols-3">
         {categories.map((c) => (
           <div key={c.id} className="bg-background p-8 sm:p-12">
             <p className="label-xs text-primary">{c.id}</p>

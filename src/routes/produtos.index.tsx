@@ -340,6 +340,46 @@ function ProdutosPage() {
           </div>
 
           <div className="flex flex-wrap items-center gap-4">
+            {/* Sub-filters for Relógios & Smartwatches */}
+            {cat === "relogios" && (
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="mr-1 label-xs text-muted-foreground">Marca:</span>
+                <Link
+                  to="/produtos"
+                  search={{ cat: "relogios", brand: undefined }}
+                  className={`border px-3.5 py-1.5 label-xs transition-all ${
+                    !brand
+                      ? "border-foreground bg-foreground text-background"
+                      : "border-border/60 text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  Todas
+                </Link>
+                <Link
+                  to="/produtos"
+                  search={{ cat: "relogios", brand: "garmin" }}
+                  className={`border px-3.5 py-1.5 label-xs transition-all ${
+                    brand === "garmin"
+                      ? "border-primary bg-primary text-primary-foreground shadow-glow"
+                      : "border-border/60 text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  Garmin
+                </Link>
+                <Link
+                  to="/produtos"
+                  search={{ cat: "relogios", brand: "xiaomi" }}
+                  className={`border px-3.5 py-1.5 label-xs transition-all ${
+                    brand === "xiaomi"
+                      ? "border-primary bg-primary text-primary-foreground shadow-glow"
+                      : "border-border/60 text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  Xiaomi
+                </Link>
+              </div>
+            )}
+
             {/* Sub-filters for Eletrônicos / Celulares (Estado: Novo / Recondicionado) */}
             {(cat === "eletronicos" || !cat) && (
               <div className="flex items-center gap-2 flex-wrap">

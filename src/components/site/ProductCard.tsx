@@ -1,19 +1,40 @@
-import { useState, type MouseEvent } from "react";
+import { useState, useEffect, type MouseEvent } from "react";
 import { Link } from "@tanstack/react-router";
 import type { Product, ProductColor } from "@/data/products";
 import { formatPrice } from "@/data/products";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingBag, ChevronLeft, ChevronRight } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 
 export function ProductCard({ product }: { product: Product }) {
-  const [selectedColor, setSelectedColor] = useState<ProductColor | null>(
-    product.colors?.[0] || null,
-  );
+  const availableImages =
+    product.images && product.images.length > 0
+      ? product.images
+      : product.colors && product.colors.length > 0
+        ? product.colors.map((c) => c.image)
+        : [product.image];
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [userInteracted, setUserInteracted] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const { addItem } = useCart();
 
-  const activeImage = selectedColor ? selectedColor.image : product.image;
+  useEffect(() => {
+    if (availableImages.length <= 1 || userInteracted) return;
+
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % availableImages.length);
+    }, 2800);
+
+    return () => clearInterval(interval);
+  }, [availableImages.length, userInteracted]);
+
+  const activeImage = availableImages[currentImageIndex] || product.image;
+  const selectedColor =
+    product.colors?.find((c) => c.image === activeImage) ||
+    product.colors?.[currentImageIndex] ||
+    product.colors?.[0] ||
+    null;
 
   const handleAddToCart = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -26,27 +47,37 @@ export function ProductCard({ product }: { product: Product }) {
       <Link to="/produtos/$id" params={{ id: product.id }} className="block flex-1">
         <div className="relative aspect-4/5 overflow-hidden stage-light bg-border/10">
           {!imageLoaded && (
-            <Skeleton className="absolute inset-0 h-full w-full rounded-none bg-border/30" />
+            <Skeleton className="absolute inset-0 h-full w-full rounded-none bg-border/30 z-10 pointer-events-none" />
           )}
-          <img
-            key={activeImage}
-            src={activeImage}
-            alt={product.name}
-            loading="lazy"
-            onLoad={() => setImageLoaded(true)}
-            width={912}
-            height={1200}
-            className={`h-full w-full object-cover transition-all duration-700 ease-out group-hover:scale-108 group-hover:brightness-105 ${
-              imageLoaded ? "opacity-100" : "opacity-0"
-            }`}
-          />
-          {/* Subtle animated red laser glow line overlay in middle on hover removed */}
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 stage-floor" />
+
+          {/* Sliding Carousel Container */}
+          <div
+            className="flex h-full w-full transition-transform duration-500 ease-out"
+            style={{ transform: `translateX(-${currentImageIndex * 100}%)` }}
+          >
+            {availableImages.map((imgUrl, idx) => (
+              <div key={idx} className="relative h-full w-full shrink-0">
+                <img
+                  src={imgUrl}
+                  alt={`${product.name} - ${idx + 1}`}
+                  loading="lazy"
+                  onLoad={() => setImageLoaded(true)}
+                  width={912}
+                  height={1200}
+                  className="h-full w-full object-cover transition-all duration-700 ease-out group-hover:scale-108 group-hover:brightness-105"
+                />
+              </div>
+            ))}
+          </div>
+
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 stage-floor z-10" />
+
           {!["iphone-13-pro-max-256gb", "iphone-14-pro-max-256gb"].includes(product.id) && (
             <div className="absolute bottom-2 right-2 z-10 border border-border/50 bg-background/80 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-muted-foreground backdrop-blur-sm">
               * Imagem ilustrativa
             </div>
           )}
+
           <div className="absolute top-3 left-3 z-10 flex flex-col gap-1">
             {product.condition === "novo" && (
               <div className="border border-emerald-500 bg-emerald-950/80 px-2 py-0.5 label-xs font-semibold uppercase tracking-wider text-emerald-400 shadow-glow backdrop-blur-sm">
@@ -64,6 +95,54 @@ export function ProductCard({ product }: { product: Product }) {
               </div>
             )}
           </div>
+
+          {availableImages.length > 1 && (
+            <>
+              {/* Pagination dots indicator */}
+              <div className="absolute top-3 right-3 z-10 flex items-center gap-1 rounded-full bg-background/80 px-2 py-1 backdrop-blur-md border border-border/60">
+                {availableImages.map((_, idx) => (
+                  <span
+                    key={idx}
+                    className={`size-1.5 rounded-full transition-all duration-300 ${
+                      idx === currentImageIndex
+                        ? "bg-primary w-3 shadow-glow"
+                        : "bg-muted-foreground/40"
+                    }`}
+                  />
+                ))}
+              </div>
+
+              {/* Prev / Next Slide Arrows on Hover */}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setUserInteracted(true);
+                  setCurrentImageIndex(
+                    (prev) => (prev - 1 + availableImages.length) % availableImages.length,
+                  );
+                }}
+                className="absolute left-2 top-1/2 -translate-y-1/2 z-20 flex size-7 items-center justify-center rounded-full bg-background/80 text-foreground opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary hover:text-primary-foreground border border-border/60 shadow-md"
+                aria-label="Imagem anterior"
+              >
+                <ChevronLeft className="size-4" />
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setUserInteracted(true);
+                  setCurrentImageIndex((prev) => (prev + 1) % availableImages.length);
+                }}
+                className="absolute right-2 top-1/2 -translate-y-1/2 z-20 flex size-7 items-center justify-center rounded-full bg-background/80 text-foreground opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary hover:text-primary-foreground border border-border/60 shadow-md"
+                aria-label="Próxima imagem"
+              >
+                <ChevronRight className="size-4" />
+              </button>
+            </>
+          )}
         </div>
 
         {/* Color Swatches selection on card */}
@@ -80,7 +159,11 @@ export function ProductCard({ product }: { product: Product }) {
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      setSelectedColor(c);
+                      setUserInteracted(true);
+                      const idx = product.colors?.findIndex((col) => col.name === c.name);
+                      if (idx !== undefined && idx !== -1) {
+                        setCurrentImageIndex(idx);
+                      }
                       setImageLoaded(false);
                     }}
                     title={c.name}
